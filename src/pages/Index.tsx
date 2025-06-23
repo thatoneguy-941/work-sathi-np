@@ -9,10 +9,12 @@ import InvoiceGeneration from '@/components/InvoiceGeneration';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, Users, FileText, Star, CheckCircle } from 'lucide-react';
+import { LanguageProvider, useLanguage } from '@/contexts/LanguageContext';
 
-const Index = () => {
+const IndexContent = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const { t } = useLanguage();
 
   // Landing Page Component
   const LandingPage = () => (
@@ -23,21 +25,20 @@ const Index = () => {
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
-            Worksathi
+            {t('heroTitle')}
             <span className="block text-2xl md:text-3xl text-gray-600 mt-2">
-              वर्कसाथी - Your Freelance Partner
+              {t('heroSubtitle')}
             </span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            The complete CRM solution designed specifically for Nepali freelancers. 
-            Manage clients, track projects, and generate invoices with eSewa & Khalti integration.
+            {t('heroDescription')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="text-lg px-8 py-3" onClick={() => setIsLoggedIn(true)}>
-              Start Free Trial
+              {t('startTrial')}
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8 py-3">
-              Watch Demo
+              {t('watchDemo')}
             </Button>
           </div>
         </div>
@@ -46,16 +47,15 @@ const Index = () => {
       {/* Features Section */}
       <section className="container mx-auto px-4 py-16">
         <h2 className="text-3xl font-bold text-center mb-12">
-          Everything You Need to Manage Your Freelance Business
+          {t('featuresTitle')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="text-center p-6 hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <Users className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Client Management</h3>
-              <p className="text-gray-600">ग्राहक व्यवस्थापन</p>
+              <h3 className="text-xl font-semibold mb-2">{t('clientManagement')}</h3>
               <p className="text-gray-600 mt-2">
-                Keep track of all your clients, their contact information, and project history in one place.
+                {t('clientManagementDesc')}
               </p>
             </CardContent>
           </Card>
@@ -63,10 +63,9 @@ const Index = () => {
           <Card className="text-center p-6 hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <TrendingUp className="w-12 h-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Project Tracking</h3>
-              <p className="text-gray-600">प्रोजेक्ट ट्र्याकिङ</p>
+              <h3 className="text-xl font-semibold mb-2">{t('projectTracking')}</h3>
               <p className="text-gray-600 mt-2">
-                Monitor project progress, deadlines, and milestones with our intuitive dashboard.
+                {t('projectTrackingDesc')}
               </p>
             </CardContent>
           </Card>
@@ -74,10 +73,9 @@ const Index = () => {
           <Card className="text-center p-6 hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <FileText className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Smart Invoicing</h3>
-              <p className="text-gray-600">स्मार्ट बिलिङ</p>
+              <h3 className="text-xl font-semibold mb-2">{t('smartInvoicing')}</h3>
               <p className="text-gray-600 mt-2">
-                Generate professional invoices with eSewa and Khalti QR codes for easy payments.
+                {t('smartInvoicingDesc')}
               </p>
             </CardContent>
           </Card>
@@ -86,20 +84,20 @@ const Index = () => {
 
       {/* Pricing Section */}
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">Simple, Transparent Pricing</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">{t('pricingTitle')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <Card className="p-6 border-2">
             <CardContent className="pt-6">
-              <h3 className="text-2xl font-bold mb-2">Free Plan</h3>
-              <p className="text-gray-600 mb-4">Perfect for getting started</p>
-              <div className="text-3xl font-bold mb-6">Rs. 0<span className="text-lg text-gray-600">/month</span></div>
+              <h3 className="text-2xl font-bold mb-2">{t('freePlan')}</h3>
+              <p className="text-gray-600 mb-4">{t('freePlanDesc')}</p>
+              <div className="text-3xl font-bold mb-6">Rs. 0<span className="text-lg text-gray-600">{t('month')}</span></div>
               <ul className="space-y-3 mb-6">
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Up to 5 clients</li>
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Up to 5 {t('clients').toLowerCase()}</li>
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Basic invoicing</li>
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Project tracking</li>
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />eSewa/Khalti QR codes</li>
               </ul>
-              <Button className="w-full">Get Started Free</Button>
+              <Button className="w-full">{t('getStartedFree')}</Button>
             </CardContent>
           </Card>
 
@@ -107,21 +105,21 @@ const Index = () => {
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm flex items-center">
                 <Star className="w-4 h-4 mr-1" />
-                Most Popular
+                {t('mostPopular')}
               </span>
             </div>
             <CardContent className="pt-6">
-              <h3 className="text-2xl font-bold mb-2">Pro Plan</h3>
-              <p className="text-gray-600 mb-4">For serious freelancers</p>
-              <div className="text-3xl font-bold mb-6">Rs. 999<span className="text-lg text-gray-600">/month</span></div>
+              <h3 className="text-2xl font-bold mb-2">{t('proPlan')}</h3>
+              <p className="text-gray-600 mb-4">{t('proPlanDesc')}</p>
+              <div className="text-3xl font-bold mb-6">Rs. 999<span className="text-lg text-gray-600">{t('month')}</span></div>
               <ul className="space-y-3 mb-6">
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Unlimited clients</li>
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Unlimited {t('clients').toLowerCase()}</li>
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Advanced invoicing</li>
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Payment reminders</li>
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Analytics & reports</li>
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Priority support</li>
               </ul>
-              <Button className="w-full">Upgrade to Pro</Button>
+              <Button className="w-full">{t('upgradeToPro')}</Button>
             </CardContent>
           </Card>
         </div>
@@ -130,7 +128,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-8">
         <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2024 Worksathi. Made with ❤️ for Nepali freelancers.</p>
+          <p>&copy; 2024 Worksathi. {t('footerText')}</p>
         </div>
       </footer>
     </div>
@@ -172,6 +170,14 @@ const Index = () => {
   };
 
   return isLoggedIn ? <MainApp /> : <LandingPage />;
+};
+
+const Index = () => {
+  return (
+    <LanguageProvider>
+      <IndexContent />
+    </LanguageProvider>
+  );
 };
 
 export default Index;

@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Plus, User, Mail, Phone, Building } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ClientManagement = () => {
+  const { t } = useLanguage();
   const [showAddForm, setShowAddForm] = useState(false);
   const [clients, setClients] = useState([
     {
@@ -45,44 +47,43 @@ const ClientManagement = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Client Management</h2>
-          <p className="text-gray-600">ग्राहक व्यवस्थापन</p>
+          <h2 className="text-2xl font-bold">{t('clientManagementTitle')}</h2>
         </div>
         <Button onClick={() => setShowAddForm(true)}>
           <Plus className="w-4 h-4 mr-2" />
-          Add Client
+          {t('addClient')}
         </Button>
       </div>
 
       {showAddForm && (
         <Card>
           <CardHeader>
-            <CardTitle>Add New Client</CardTitle>
+            <CardTitle>{t('addNewClient')}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleAddClient} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="clientName">Client Name</Label>
-                  <Input id="clientName" placeholder="Enter client name" required />
+                  <Label htmlFor="clientName">{t('clientName')}</Label>
+                  <Input id="clientName" placeholder={t('clientName')} required />
                 </div>
                 <div>
-                  <Label htmlFor="clientEmail">Email</Label>
+                  <Label htmlFor="clientEmail">{t('email')}</Label>
                   <Input id="clientEmail" type="email" placeholder="client@example.com" required />
                 </div>
                 <div>
-                  <Label htmlFor="clientPhone">Phone</Label>
+                  <Label htmlFor="clientPhone">{t('phone')}</Label>
                   <Input id="clientPhone" placeholder="+977-" />
                 </div>
                 <div>
-                  <Label htmlFor="clientCompany">Company</Label>
-                  <Input id="clientCompany" placeholder="Company name" />
+                  <Label htmlFor="clientCompany">{t('company')}</Label>
+                  <Input id="clientCompany" placeholder={t('company')} />
                 </div>
               </div>
               <div className="flex space-x-2">
-                <Button type="submit">Add Client</Button>
+                <Button type="submit">{t('addClient')}</Button>
                 <Button type="button" variant="outline" onClick={() => setShowAddForm(false)}>
-                  Cancel
+                  {t('cancel')}
                 </Button>
               </div>
             </form>
@@ -101,7 +102,7 @@ const ClientManagement = () => {
                   </div>
                   <div>
                     <h3 className="font-medium">{client.name}</h3>
-                    <p className="text-sm text-gray-600">{client.projects} projects</p>
+                    <p className="text-sm text-gray-600">{client.projects} {t('projects')}</p>
                   </div>
                 </div>
               </div>
@@ -118,16 +119,16 @@ const ClientManagement = () => {
               </div>
               
               <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600">Total Paid</p>
+                <p className="text-sm text-gray-600">{t('totalPaid')}</p>
                 <p className="font-medium text-green-600">{client.totalPaid}</p>
               </div>
               
               <div className="mt-4 flex space-x-2">
                 <Button size="sm" variant="outline" className="flex-1">
-                  View Projects
+                  {t('viewProjects')}
                 </Button>
                 <Button size="sm" variant="outline" className="flex-1">
-                  Edit
+                  {t('edit')}
                 </Button>
               </div>
             </CardContent>
