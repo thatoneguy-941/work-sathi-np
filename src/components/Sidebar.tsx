@@ -30,7 +30,7 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
 
   return (
     <aside className="w-64 bg-white border-r border-gray-200 h-full">
-      <div className="p-4">
+      <div className="p-4 h-full">
         <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
           {t('menu')}
         </h3>
@@ -52,19 +52,6 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
             );
           })}
         </nav>
-      </div>
-      
-      {/* Upgrade Banner */}
-      <div className="absolute bottom-4 left-4 right-4">
-        <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-4 rounded-lg">
-          <h4 className="font-medium mb-1">{t('upgradeTitle')}</h4>
-          <p className="text-xs text-blue-100 mb-3">
-            {t('upgradeDesc')}
-          </p>
-          <Button size="sm" variant="secondary" className="w-full">
-            {t('upgradeNow')}
-          </Button>
-        </div>
       </div>
     </aside>
   );
