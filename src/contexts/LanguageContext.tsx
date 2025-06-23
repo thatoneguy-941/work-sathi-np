@@ -49,7 +49,25 @@ const translations = {
     upgradeNow: 'Upgrade Now',
     upgradeRequired: 'Upgrade Required',
     upgradeFeatureMessage: 'The {feature} feature is only available in our Pro plan.',
-    maybeLater: 'Maybe Later'
+    maybeLater: 'Maybe Later',
+    projectManagement: "Project Management",
+    totalProjects: "Total Projects",
+    completed: "Completed",
+    inProgress: "In Progress", 
+    totalValue: "Total Value",
+    noProjectsYet: "No projects yet",
+    createFirstProject: "Create your first project to start tracking your work.",
+    createProject: "Create Project",
+    invoiceManagement: "Invoice Management",
+    paidThisMonth: "Paid This Month",
+    pending: "Pending",
+    overdue: "Overdue",
+    totalInvoices: "Total Invoices",
+    noInvoicesYet: "No invoices yet",
+    createFirstInvoice: "Create your first invoice to start billing clients.",
+    createFirstInvoiceButton: "Create Invoice",
+    noClientsYet: "No clients yet",
+    addFirstClientDesc: "Add your first client to start managing your freelance business."
   },
   np: {
     heroTitle: 'वर्कसाथी',
@@ -89,7 +107,25 @@ const translations = {
     upgradeNow: 'अहिले अपग्रेड गर्नुहोस्',
     upgradeRequired: 'अपग्रेड आवश्यक',
     upgradeFeatureMessage: '{feature} सुविधा हाम्रो प्रो योजनामा मात्र उपलब्ध छ।',
-    maybeLater: 'सायद पछि'
+    maybeLater: 'सायद पछि',
+    projectManagement: "प्रोजेक्ट व्यवस्थापन",
+    totalProjects: "कुल प्रोजेक्टहरू",
+    completed: "सम्पन्न",
+    inProgress: "प्रगतिमा",
+    totalValue: "कुल मूल्य",
+    noProjectsYet: "अझै प्रोजेक्टहरू छैनन्",
+    createFirstProject: "तपाईंको काम ट्र्याक गर्न पहिलो प्रोजेक्ट सिर्जना गर्नुहोस्।",
+    createProject: "प्रोजेक्ट सिर्जना गर्नुहोस्",
+    invoiceManagement: "बिल व्यवस्थापन",
+    paidThisMonth: "यस महिना भुक्तानी",
+    pending: "बाँकी",
+    overdue: "समय सकिएको",
+    totalInvoices: "कुल बिलहरू",
+    noInvoicesYet: "अझै बिलहरू छैनन्",
+    createFirstInvoice: "ग्राहकहरूलाई बिलिङ सुरु गर्न पहिलो बिल सिर्जना गर्नुहोस्।",
+    createFirstInvoiceButton: "बिल सिर्जना गर्नुहोस्",
+    noClientsYet: "अझै ग्राहकहरू छैनन्",
+    addFirstClientDesc: "तपाईंको फ्रीलान्स व्यवसाय व्यवस्थापन सुरु गर्न पहिलो ग्राहक थप्नुहोस्।"
   }
 };
 
