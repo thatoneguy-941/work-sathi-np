@@ -11,10 +11,10 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, Users, FileText, Star, CheckCircle, Loader2 } from 'lucide-react';
-import { LanguageProvider, useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-const IndexContent = () => {
-  const { user, loading } = useAuth();
+const Index = () => {
+  const { user, loading, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const { t } = useLanguage();
 
@@ -146,8 +146,6 @@ const IndexContent = () => {
 
   // Main App Component for authenticated users
   const MainApp = () => {
-    const { signOut } = useAuth();
-
     const renderContent = () => {
       switch (activeTab) {
         case 'clients':
@@ -184,14 +182,6 @@ const IndexContent = () => {
   };
 
   return user ? <MainApp /> : <LandingPage />;
-};
-
-const Index = () => {
-  return (
-    <LanguageProvider>
-      <IndexContent />
-    </LanguageProvider>
-  );
 };
 
 export default Index;
