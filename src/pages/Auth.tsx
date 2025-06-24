@@ -6,8 +6,9 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,10 +16,20 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
   
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, user } = useAuth();
   const { t } = useLanguage();
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  // Redirect if already logged in
+  React.useEffect(() => {
+    if (user && !showWelcome) {
+      navigate('/');
+    }
+  }, [user, navigate, showWelcome]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,10 +59,23 @@ const Auth = () => {
             variant: "destructive",
           });
         } else {
+          // Show welcome message and auto-signin
+          setShowWelcome(true);
           toast({
             title: "Account Created!",
-            description: "Please check your email to verify your account.",
+            description: "Welcome to Worksathi! Let's get you started.",
           });
+          
+          // Auto sign in after successful signup
+          setTimeout(async () => {
+            const { error: signInError } = await signIn(email, password);
+            if (!signInError) {
+              setTimeout(() => {
+                setShowWelcome(false);
+                navigate('/');
+              }, 2000);
+            }
+          }, 1000);
         }
       }
     } catch (error) {
@@ -65,17 +89,57 @@ const Auth = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const switchMode = () => {
+    setIsLogin(!isLogin);
+    setEmail('');
+    setPassword('');
+    setFullName('');
+  };
+
+  // Welcome screen after signup
+  if (showWelcome) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md animate-scale-in">
+          <CardHeader className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+              <span className="text-white font-bold text-2xl">W</span>
+            </div>
+            <CardTitle className="text-3xl animate-fade-in">Welcome to Worksathi!</CardTitle>
+            <CardDescription className="animate-fade-in">
+              Your freelance management journey starts here
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center space-y-4 animate-fade-in">
+            <div className="space-y-2 text-gray-600">
+              <p>🎉 Account created successfully!</p>
+              <p>📊 Setting up your dashboard...</p>
+              <p>🚀 Getting you signed in...</p>
+            </div>
+            <div className="flex justify-center">
+              <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md animate-fade-in">
         <CardHeader className="text-center">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg flex items-center justify-center mx-auto mb-4 hover-scale">
             <span className="text-white font-bold text-xl">W</span>
           </div>
-          <CardTitle className="text-2xl">
+          <CardTitle className="text-2xl animate-fade-in">
             {isLogin ? t('login') : 'Sign Up'}
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="animate-fade-in">
             {isLogin 
               ? 'Sign in to your Worksathi account' 
               : 'Create your Worksathi account'
@@ -85,7 +149,7 @@ const Auth = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
-              <div className="space-y-2">
+              <div className="space-y-2 animate-slide-in-right">
                 <Label htmlFor="fullName">Full Name</Label>
                 <Input
                   id="fullName"
@@ -94,6 +158,7 @@ const Auth = () => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required={!isLogin}
+                  className="transition-all duration-200 focus:scale-[1.02]"
                 />
               </div>
             )}
@@ -107,22 +172,41 @@ const Auth = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="transition-all duration-200 focus:scale-[1.02]"
               />
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="pr-10 transition-all duration-200 focus:scale-[1.02]"
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors duration-200 hover:scale-110"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button 
+              type="submit" 
+              className="w-full transition-all duration-200 hover:scale-[1.02]" 
+              disabled={loading}
+            >
               {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               {isLogin ? t('login') : 'Sign Up'}
             </Button>
@@ -131,8 +215,8 @@ const Auth = () => {
           <div className="mt-4 text-center">
             <button
               type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-sm text-blue-600 hover:text-blue-500"
+              onClick={switchMode}
+              className="text-sm text-blue-600 hover:text-blue-500 transition-colors duration-200 hover:underline"
             >
               {isLogin 
                 ? "Don't have an account? Sign up" 
