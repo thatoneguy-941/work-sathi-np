@@ -1,25 +1,35 @@
 
 import React, { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/components/Dashboard';
 import ClientManagement from '@/components/ClientManagement';
 import ProjectManagement from '@/components/ProjectManagement';
 import InvoiceGeneration from '@/components/InvoiceGeneration';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { TrendingUp, Users, FileText, Star, CheckCircle } from 'lucide-react';
+import { TrendingUp, Users, FileText, Star, CheckCircle, Loader2 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/LanguageContext';
 
 const IndexContent = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const { t } = useLanguage();
 
-  // Landing Page Component
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+
+  // Landing Page Component for non-authenticated users
   const LandingPage = () => (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
-      <Header isLoggedIn={isLoggedIn} onLogin={() => setIsLoggedIn(true)} />
+      <Header isLoggedIn={false} onLogin={() => window.location.href = '/auth'} />
       
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
@@ -34,7 +44,7 @@ const IndexContent = () => {
             {t('heroDescription')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8 py-3" onClick={() => setIsLoggedIn(true)}>
+            <Button size="lg" className="text-lg px-8 py-3" onClick={() => window.location.href = '/auth'}>
               {t('startTrial')}
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8 py-3">
@@ -97,7 +107,7 @@ const IndexContent = () => {
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Project tracking</li>
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />eSewa/Khalti QR codes</li>
               </ul>
-              <Button className="w-full">{t('getStartedFree')}</Button>
+              <Button className="w-full" onClick={() => window.location.href = '/auth'}>{t('getStartedFree')}</Button>
             </CardContent>
           </Card>
 
@@ -119,7 +129,7 @@ const IndexContent = () => {
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Analytics & reports</li>
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-600 mr-2" />Priority support</li>
               </ul>
-              <Button className="w-full">{t('upgradeToPro')}</Button>
+              <Button className="w-full" onClick={() => window.location.href = '/auth'}>{t('upgradeToPro')}</Button>
             </CardContent>
           </Card>
         </div>
@@ -134,8 +144,10 @@ const IndexContent = () => {
     </div>
   );
 
-  // Main App Component
+  // Main App Component for authenticated users
   const MainApp = () => {
+    const { signOut } = useAuth();
+
     const renderContent = () => {
       switch (activeTab) {
         case 'clients':
@@ -154,22 +166,24 @@ const IndexContent = () => {
     };
 
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Header 
-          isLoggedIn={isLoggedIn} 
-          onLogout={() => setIsLoggedIn(false)} 
-        />
-        <div className="flex h-[calc(100vh-64px)]">
-          <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
-          <main className="flex-1 overflow-auto p-6">
-            {renderContent()}
-          </main>
+      <ProtectedRoute>
+        <div className="min-h-screen bg-gray-50">
+          <Header 
+            isLoggedIn={true} 
+            onLogout={signOut} 
+          />
+          <div className="flex h-[calc(100vh-64px)]">
+            <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+            <main className="flex-1 overflow-auto p-6">
+              {renderContent()}
+            </main>
+          </div>
         </div>
-      </div>
+      </ProtectedRoute>
     );
   };
 
-  return isLoggedIn ? <MainApp /> : <LandingPage />;
+  return user ? <MainApp /> : <LandingPage />;
 };
 
 const Index = () => {
