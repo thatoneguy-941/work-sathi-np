@@ -104,17 +104,17 @@ const Auth = () => {
   if (showWelcome) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md animate-scale-in">
+        <Card className="w-full max-w-md transform transition-all duration-300 scale-100 animate-in fade-in">
           <CardHeader className="text-center">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
               <span className="text-white font-bold text-2xl">W</span>
             </div>
-            <CardTitle className="text-3xl animate-fade-in">Welcome to Worksathi!</CardTitle>
-            <CardDescription className="animate-fade-in">
+            <CardTitle className="text-3xl animate-in fade-in duration-500">Welcome to Worksathi!</CardTitle>
+            <CardDescription className="animate-in fade-in duration-700">
               Your freelance management journey starts here
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-center space-y-4 animate-fade-in">
+          <CardContent className="text-center space-y-4 animate-in fade-in duration-1000">
             <div className="space-y-2 text-gray-600">
               <p>🎉 Account created successfully!</p>
               <p>📊 Setting up your dashboard...</p>
@@ -131,15 +131,15 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md animate-fade-in">
+      <Card className="w-full max-w-md animate-in fade-in duration-500">
         <CardHeader className="text-center">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg flex items-center justify-center mx-auto mb-4 hover-scale">
+          <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg flex items-center justify-center mx-auto mb-4 transition-transform duration-200 hover:scale-105">
             <span className="text-white font-bold text-xl">W</span>
           </div>
-          <CardTitle className="text-2xl animate-fade-in">
+          <CardTitle className="text-2xl animate-in fade-in duration-300">
             {isLogin ? t('login') : 'Sign Up'}
           </CardTitle>
-          <CardDescription className="animate-fade-in">
+          <CardDescription className="animate-in fade-in duration-500">
             {isLogin 
               ? 'Sign in to your Worksathi account' 
               : 'Create your Worksathi account'
@@ -149,7 +149,7 @@ const Auth = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
-              <div className="space-y-2 animate-slide-in-right">
+              <div className="space-y-2 animate-in slide-in-from-right duration-300">
                 <Label htmlFor="fullName">Full Name</Label>
                 <Input
                   id="fullName"
