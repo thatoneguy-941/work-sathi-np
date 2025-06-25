@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Plus, Users } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import AddClientModal from '@/components/modals/AddClientModal';
+import EmptyState from '@/components/shared/EmptyState';
+import QuickActionCard from '@/components/shared/QuickActionCard';
 
 const ClientManagement = () => {
   const { t } = useLanguage();
@@ -14,32 +14,23 @@ const ClientManagement = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">{t('clientManagementTitle')}</h2>
+          <h2 className="text-2xl font-bold font-sans">{t('clientManagementTitle')}</h2>
         </div>
         <AddClientModal>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            {t('addClient')}
-          </Button>
+          <QuickActionCard icon={Plus} label={t('addClient')} />
         </AddClientModal>
       </div>
 
-      {/* Empty State */}
-      <Card>
-        <CardContent className="p-12">
-          <div className="text-center">
-            <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">{t('noClientsYet')}</h3>
-            <p className="text-gray-600 mb-4">{t('addFirstClientDesc')}</p>
-            <AddClientModal>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                {t('addFirstClient')}
-              </Button>
-            </AddClientModal>
-          </div>
-        </CardContent>
-      </Card>
+      <EmptyState
+        icon={Users}
+        title={t('noClientsYet')}
+        description={t('addFirstClientDesc')}
+        action={
+          <AddClientModal>
+            <QuickActionCard icon={Plus} label={t('addFirstClient')} />
+          </AddClientModal>
+        }
+      />
     </div>
   );
 };

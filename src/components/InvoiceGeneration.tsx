@@ -1,73 +1,51 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Plus, FileText } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import AddInvoiceModal from '@/components/modals/AddInvoiceModal';
+import StatCard from '@/components/shared/StatCard';
+import EmptyState from '@/components/shared/EmptyState';
+import QuickActionCard from '@/components/shared/QuickActionCard';
 
 const InvoiceGeneration = () => {
   const { t } = useLanguage();
   const [invoices] = useState([]);
 
+  const stats = [
+    { title: t('paidThisMonth'), value: 'Rs. 0', icon: FileText, color: 'text-green-600' },
+    { title: t('pending'), value: 'Rs. 0', icon: FileText, color: 'text-yellow-600' },
+    { title: t('overdue'), value: 'Rs. 0', icon: FileText, color: 'text-red-600' },
+    { title: t('totalInvoices'), value: '0', icon: FileText, color: 'text-blue-600' }
+  ];
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">{t('invoiceManagement')}</h2>
+          <h2 className="text-2xl font-bold font-sans">{t('invoiceManagement')}</h2>
         </div>
         <AddInvoiceModal>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            {t('createInvoice')}
-          </Button>
+          <QuickActionCard icon={Plus} label={t('createInvoice')} />
         </AddInvoiceModal>
       </div>
 
       {/* Invoice Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-green-600">Rs. 0</p>
-            <p className="text-sm text-gray-600">{t('paidThisMonth')}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-yellow-600">Rs. 0</p>
-            <p className="text-sm text-gray-600">{t('pending')}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-red-600">Rs. 0</p>
-            <p className="text-sm text-gray-600">{t('overdue')}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-blue-600">0</p>
-            <p className="text-sm text-gray-600">{t('totalInvoices')}</p>
-          </CardContent>
-        </Card>
+        {stats.map((stat, index) => (
+          <StatCard key={index} {...stat} />
+        ))}
       </div>
 
-      {/* Empty State */}
-      <Card>
-        <CardContent className="p-12">
-          <div className="text-center">
-            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">{t('noInvoicesYet')}</h3>
-            <p className="text-gray-600 mb-4">{t('createFirstInvoice')}</p>
-            <AddInvoiceModal>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                {t('createFirstInvoiceButton')}
-              </Button>
-            </AddInvoiceModal>
-          </div>
-        </CardContent>
-      </Card>
+      <EmptyState
+        icon={FileText}
+        title={t('noInvoicesYet')}
+        description={t('createFirstInvoice')}
+        action={
+          <AddInvoiceModal>
+            <QuickActionCard icon={Plus} label={t('createFirstInvoiceButton')} />
+          </AddInvoiceModal>
+        }
+      />
     </div>
   );
 };

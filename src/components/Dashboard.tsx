@@ -1,12 +1,14 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { TrendingUp, Users, FileText, Plus, Calendar } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import AddClientModal from '@/components/modals/AddClientModal';
 import AddProjectModal from '@/components/modals/AddProjectModal';
 import AddInvoiceModal from '@/components/modals/AddInvoiceModal';
+import StatCard from '@/components/shared/StatCard';
+import EmptyState from '@/components/shared/EmptyState';
+import QuickActionCard from '@/components/shared/QuickActionCard';
 
 interface DashboardProps {
   onTabChange?: (tab: string) => void;
@@ -28,14 +30,16 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
       value: '0',
       trend: '+0',
       icon: Users,
-      color: 'text-blue-600'
+      color: 'text-blue-600',
+      onClick: () => onTabChange?.('clients')
     },
     {
       title: t('pendingInvoices'),
       value: '0',
       trend: 'Rs. 0',
       icon: FileText,
-      color: 'text-orange-600'
+      color: 'text-orange-600',
+      onClick: () => onTabChange?.('invoices')
     },
     {
       title: t('thisMonth'),
@@ -50,76 +54,48 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
     <div className="space-y-6">
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-6 rounded-lg">
-        <h2 className="text-2xl font-bold mb-2">{t('welcomeBack')}</h2>
-        <p className="text-blue-100">{t('dashboardSubtitle')}</p>
+        <h2 className="text-2xl font-bold mb-2 font-sans">{t('welcomeBack')}</h2>
+        <p className="text-blue-100 font-medium">{t('dashboardSubtitle')}</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => (
-          <Card key={index} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">{stat.title}</p>
-                  <p className="text-2xl font-bold mt-1">{stat.value}</p>
-                  <p className={`text-sm ${stat.color}`}>{stat.trend}</p>
-                </div>
-                <stat.icon className={`w-8 h-8 ${stat.color}`} />
-              </div>
-            </CardContent>
-          </Card>
+          <StatCard key={index} {...stat} />
         ))}
       </div>
 
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <CardTitle>{t('quickActions')}</CardTitle>
+          <CardTitle className="font-semibold">{t('quickActions')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <AddClientModal>
-              <Button className="h-20 flex-col w-full">
-                <Plus className="w-6 h-6 mb-2" />
-                <span>{t('addClient')}</span>
-              </Button>
-            </AddClientModal>
-            <AddProjectModal>
-              <Button variant="outline" className="h-20 flex-col w-full">
-                <Plus className="w-6 h-6 mb-2" />
-                <span>{t('newProject')}</span>
-              </Button>
-            </AddProjectModal>
-            <AddInvoiceModal>
-              <Button variant="outline" className="h-20 flex-col w-full">
-                <FileText className="w-6 h-6 mb-2" />
-                <span>{t('createInvoice')}</span>
-              </Button>
-            </AddInvoiceModal>
+            <QuickActionCard icon={Plus} label={t('addClient')}>
+              <AddClientModal />
+            </QuickActionCard>
+            <QuickActionCard icon={Plus} label={t('newProject')} variant="outline">
+              <AddProjectModal />
+            </QuickActionCard>
+            <QuickActionCard icon={FileText} label={t('createInvoice')} variant="outline">
+              <AddInvoiceModal />
+            </QuickActionCard>
           </div>
         </CardContent>
       </Card>
 
       {/* Getting Started Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t('gettingStarted')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-8">
-            <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">{t('noDataYet')}</h3>
-            <p className="text-gray-600 mb-4">{t('startByAdding')}</p>
-            <AddClientModal>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                {t('addFirstClient')}
-              </Button>
-            </AddClientModal>
-          </div>
-        </CardContent>
-      </Card>
+      <EmptyState
+        icon={Users}
+        title={t('noDataYet')}
+        description={t('startByAdding')}
+        action={
+          <AddClientModal>
+            <QuickActionCard icon={Plus} label={t('addFirstClient')} />
+          </AddClientModal>
+        }
+      />
     </div>
   );
 };
