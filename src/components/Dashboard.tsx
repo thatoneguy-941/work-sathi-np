@@ -4,8 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TrendingUp, Users, FileText, Plus, Calendar } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import AddClientModal from '@/components/modals/AddClientModal';
+import AddProjectModal from '@/components/modals/AddProjectModal';
+import AddInvoiceModal from '@/components/modals/AddInvoiceModal';
 
-const Dashboard = () => {
+interface DashboardProps {
+  onTabChange?: (tab: string) => void;
+}
+
+const Dashboard = ({ onTabChange }: DashboardProps) => {
   const { t } = useLanguage();
 
   const stats = [
@@ -72,18 +79,24 @@ const Dashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button className="h-20 flex-col">
-              <Plus className="w-6 h-6 mb-2" />
-              <span>{t('addClient')}</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col">
-              <Plus className="w-6 h-6 mb-2" />
-              <span>{t('newProject')}</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col">
-              <FileText className="w-6 h-6 mb-2" />
-              <span>{t('createInvoice')}</span>
-            </Button>
+            <AddClientModal>
+              <Button className="h-20 flex-col w-full">
+                <Plus className="w-6 h-6 mb-2" />
+                <span>{t('addClient')}</span>
+              </Button>
+            </AddClientModal>
+            <AddProjectModal>
+              <Button variant="outline" className="h-20 flex-col w-full">
+                <Plus className="w-6 h-6 mb-2" />
+                <span>{t('newProject')}</span>
+              </Button>
+            </AddProjectModal>
+            <AddInvoiceModal>
+              <Button variant="outline" className="h-20 flex-col w-full">
+                <FileText className="w-6 h-6 mb-2" />
+                <span>{t('createInvoice')}</span>
+              </Button>
+            </AddInvoiceModal>
           </div>
         </CardContent>
       </Card>
@@ -98,10 +111,12 @@ const Dashboard = () => {
             <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">{t('noDataYet')}</h3>
             <p className="text-gray-600 mb-4">{t('startByAdding')}</p>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              {t('addFirstClient')}
-            </Button>
+            <AddClientModal>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                {t('addFirstClient')}
+              </Button>
+            </AddClientModal>
           </div>
         </CardContent>
       </Card>

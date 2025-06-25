@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, lazy, Suspense, memo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
@@ -191,7 +190,7 @@ const Index = memo(() => {
         case 'settings':
           return <div className="p-8 text-center text-gray-600">Settings panel coming soon...</div>;
         default:
-          return <Dashboard />;
+          return <Dashboard onTabChange={handleTabChange} />;
       }
     }, [activeTab]);
 

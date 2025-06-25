@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, FileText } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import AddInvoiceModal from '@/components/modals/AddInvoiceModal';
 
 const InvoiceGeneration = () => {
   const { t } = useLanguage();
@@ -15,10 +16,12 @@ const InvoiceGeneration = () => {
         <div>
           <h2 className="text-2xl font-bold">{t('invoiceManagement')}</h2>
         </div>
-        <Button>
-          <Plus className="w-4 h-4 mr-2" />
-          {t('createInvoice')}
-        </Button>
+        <AddInvoiceModal>
+          <Button>
+            <Plus className="w-4 h-4 mr-2" />
+            {t('createInvoice')}
+          </Button>
+        </AddInvoiceModal>
       </div>
 
       {/* Invoice Stats */}
@@ -56,10 +59,12 @@ const InvoiceGeneration = () => {
             <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">{t('noInvoicesYet')}</h3>
             <p className="text-gray-600 mb-4">{t('createFirstInvoice')}</p>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              {t('createFirstInvoiceButton')}
-            </Button>
+            <AddInvoiceModal>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                {t('createFirstInvoiceButton')}
+              </Button>
+            </AddInvoiceModal>
           </div>
         </CardContent>
       </Card>

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, FolderOpen } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import AddProjectModal from '@/components/modals/AddProjectModal';
 
 const ProjectManagement = () => {
   const { t } = useLanguage();
@@ -15,10 +16,12 @@ const ProjectManagement = () => {
         <div>
           <h2 className="text-2xl font-bold">{t('projectManagement')}</h2>
         </div>
-        <Button>
-          <Plus className="w-4 h-4 mr-2" />
-          {t('newProject')}
-        </Button>
+        <AddProjectModal>
+          <Button>
+            <Plus className="w-4 h-4 mr-2" />
+            {t('newProject')}
+          </Button>
+        </AddProjectModal>
       </div>
 
       {/* Project Stats */}
@@ -56,10 +59,12 @@ const ProjectManagement = () => {
             <FolderOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">{t('noProjectsYet')}</h3>
             <p className="text-gray-600 mb-4">{t('createFirstProject')}</p>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              {t('createProject')}
-            </Button>
+            <AddProjectModal>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                {t('createProject')}
+              </Button>
+            </AddProjectModal>
           </div>
         </CardContent>
       </Card>
