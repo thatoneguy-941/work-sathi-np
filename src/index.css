@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,5 +100,46 @@
 
   body {
     @apply bg-background text-foreground;
+    /* Performance optimizations */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Enable hardware acceleration for better performance */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+  }
+
+  /* Optimize animations for better performance */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Optimize hover states */
+  @media (hover: hover) {
+    .hover\:scale-105:hover {
+      transform: scale(1.05);
+    }
+    
+    .hover\:scale-110:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+/* Performance optimizations for components */
+@layer components {
+  .smooth-transition {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
   }
 }

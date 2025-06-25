@@ -1,22 +1,40 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, lazy, Suspense, memo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/components/Dashboard';
-import ClientManagement from '@/components/ClientManagement';
-import ProjectManagement from '@/components/ProjectManagement';
-import InvoiceGeneration from '@/components/InvoiceGeneration';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, Users, FileText, Star, CheckCircle, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-const Index = () => {
+// Lazy load heavy components
+const ClientManagement = lazy(() => import('@/components/ClientManagement'));
+const ProjectManagement = lazy(() => import('@/components/ProjectManagement'));
+const InvoiceGeneration = lazy(() => import('@/components/InvoiceGeneration'));
+
+const LoadingSpinner = memo(() => (
+  <div className="flex items-center justify-center h-64">
+    <Loader2 className="w-8 h-8 animate-spin" />
+  </div>
+));
+
+LoadingSpinner.displayName = 'LoadingSpinner';
+
+const Index = memo(() => {
   const { user, loading, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const { t } = useLanguage();
+
+  const handleTabChange = useCallback((tab: string) => {
+    setActiveTab(tab);
+  }, []);
+
+  const handleAuthClick = useCallback(() => {
+    window.location.href = '/auth';
+  }, []);
 
   if (loading) {
     return (
@@ -27,9 +45,9 @@ const Index = () => {
   }
 
   // Landing Page Component for non-authenticated users
-  const LandingPage = () => (
+  const LandingPage = memo(() => (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
-      <Header isLoggedIn={false} onLogin={() => window.location.href = '/auth'} />
+      <Header isLoggedIn={false} onLogin={handleAuthClick} />
       
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
@@ -142,18 +160,32 @@ const Index = () => {
         </div>
       </footer>
     </div>
-  );
+  ));
+
+  LandingPage.displayName = 'LandingPage';
 
   // Main App Component for authenticated users
-  const MainApp = () => {
-    const renderContent = () => {
+  const MainApp = memo(() => {
+    const renderContent = useCallback(() => {
       switch (activeTab) {
         case 'clients':
-          return <ClientManagement />;
+          return (
+            <Suspense fallback={<LoadingSpinner />}>
+              <ClientManagement />
+            </Suspense>
+          );
         case 'projects':
-          return <ProjectManagement />;
+          return (
+            <Suspense fallback={<LoadingSpinner />}>
+              <ProjectManagement />
+            </Suspense>
+          );
         case 'invoices':
-          return <InvoiceGeneration />;
+          return (
+            <Suspense fallback={<LoadingSpinner />}>
+              <InvoiceGeneration />
+            </Suspense>
+          );
         case 'profile':
           return <div className="p-8 text-center text-gray-600">Profile settings coming soon...</div>;
         case 'settings':
@@ -161,7 +193,7 @@ const Index = () => {
         default:
           return <Dashboard />;
       }
-    };
+    }, [activeTab]);
 
     return (
       <ProtectedRoute>
@@ -171,7 +203,7 @@ const Index = () => {
             onLogout={signOut} 
           />
           <div className="flex h-[calc(100vh-64px)]">
-            <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+            <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
             <main className="flex-1 overflow-auto p-6">
               {renderContent()}
             </main>
@@ -179,9 +211,13 @@ const Index = () => {
         </div>
       </ProtectedRoute>
     );
-  };
+  });
+
+  MainApp.displayName = 'MainApp';
 
   return user ? <MainApp /> : <LandingPage />;
-};
+});
+
+Index.displayName = 'Index';
 
 export default Index;

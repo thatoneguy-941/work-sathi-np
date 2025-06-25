@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import WelcomeScreen from '@/components/auth/WelcomeScreen';
 import AuthForm from '@/components/auth/AuthForm';
 
-const Auth = () => {
+const Auth = memo(() => {
   const [showWelcome, setShowWelcome] = useState(false);
   
   const { user } = useAuth();
@@ -30,15 +30,17 @@ const Auth = () => {
     }
   }, [showWelcome, user, navigate]);
 
-  const handleWelcomeShow = () => {
+  const handleWelcomeShow = useCallback(() => {
     setShowWelcome(true);
-  };
+  }, []);
 
   if (showWelcome) {
     return <WelcomeScreen />;
   }
 
   return <AuthForm onWelcomeShow={handleWelcomeShow} />;
-};
+});
+
+Auth.displayName = 'Auth';
 
 export default Auth;
