@@ -104,11 +104,11 @@
     color: hsl(var(--foreground));
   }
 
-  h1 { @apply text-3xl; }
-  h2 { @apply text-2xl; }
-  h3 { @apply text-xl; }
-  h4 { @apply text-lg; }
-  h5 { @apply text-base; }
+  h1 { @apply text-2xl; }
+  h2 { @apply text-xl; }
+  h3 { @apply text-lg; }
+  h4 { @apply text-base; }
+  h5 { @apply text-sm; }
   h6 { @apply text-sm; }
 
   /* Consistent paragraph styling */
@@ -141,9 +141,9 @@
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
-  /* Smooth transitions */
-  button, [role="button"], .transition-all {
-    @apply transition-all duration-200 ease-in-out;
+  /* Smooth transitions - removed circular dependency */
+  button, [role="button"] {
+    transition: all 0.2s ease-in-out;
   }
 }
 
@@ -180,9 +180,9 @@
     font-size: 14px;
   }
   
-  h1 { @apply text-2xl; }
-  h2 { @apply text-xl; }
-  h3 { @apply text-lg; }
+  h1 { @apply text-xl; }
+  h2 { @apply text-lg; }
+  h3 { @apply text-base; }
   
   button, [role="button"], input, select, textarea {
     min-height: 44px;
