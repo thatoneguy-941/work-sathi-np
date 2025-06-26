@@ -72,15 +72,15 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <QuickActionCard icon={Plus} label={t('addClient')}>
-              <AddClientModal />
-            </QuickActionCard>
-            <QuickActionCard icon={Plus} label={t('newProject')} variant="outline">
-              <AddProjectModal />
-            </QuickActionCard>
-            <QuickActionCard icon={FileText} label={t('createInvoice')} variant="outline">
-              <AddInvoiceModal />
-            </QuickActionCard>
+            <AddClientModal>
+              <QuickActionCard icon={Plus} label={t('addClient')} />
+            </AddClientModal>
+            <AddProjectModal>
+              <QuickActionCard icon={Plus} label={t('newProject')} variant="outline" />
+            </AddProjectModal>
+            <AddInvoiceModal>
+              <QuickActionCard icon={FileText} label={t('createInvoice')} variant="outline" />
+            </AddInvoiceModal>
           </div>
         </CardContent>
       </Card>
