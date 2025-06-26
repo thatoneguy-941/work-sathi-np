@@ -12,14 +12,16 @@ const ClientManagement = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-medium text-foreground">{t('clientManagementTitle')}</h1>
+      <div className="flex justify-between items-center gap-4">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-3xl font-medium text-foreground capitalize">{t('clientManagementTitle')}</h1>
           <p className="text-muted-foreground mt-2">Manage your client relationships</p>
         </div>
-        <AddClientModal>
-          <QuickActionCard icon={Plus} label={t('addClient')} />
-        </AddClientModal>
+        <div className="flex-shrink-0">
+          <AddClientModal>
+            <QuickActionCard icon={Plus} label={t('addClient')} />
+          </AddClientModal>
+        </div>
       </div>
 
       <EmptyState
