@@ -19,10 +19,11 @@ const InvoiceGeneration = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold font-sans">{t('invoiceManagement')}</h2>
+          <h1 className="text-3xl font-medium text-foreground">{t('invoiceManagement')}</h1>
+          <p className="text-muted-foreground mt-2">Generate and track your invoices</p>
         </div>
         <AddInvoiceModal>
           <QuickActionCard icon={Plus} label={t('createInvoice')} />
@@ -30,7 +31,7 @@ const InvoiceGeneration = () => {
       </div>
 
       {/* Invoice Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <StatCard key={index} {...stat} />
         ))}

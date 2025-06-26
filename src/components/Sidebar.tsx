@@ -30,8 +30,8 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
 
   return (
     <aside className="w-64 bg-white border-r border-gray-200 h-full">
-      <div className="p-4 h-full">
-        <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
+      <div className="p-6 h-full">
+        <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-6">
           {t('menu')}
         </h3>
         <nav className="space-y-2">
@@ -41,13 +41,11 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
               <Button
                 key={item.id}
                 variant={activeTab === item.id ? "default" : "ghost"}
-                className="w-full justify-start h-auto py-3"
+                className="w-full justify-start h-12 px-4 font-medium"
                 onClick={() => onTabChange(item.id)}
               >
-                <Icon className="w-5 h-5 mr-3" />
-                <div className="text-left">
-                  <div>{t(item.labelKey)}</div>
-                </div>
+                <Icon className="w-5 h-5 mr-3 flex-shrink-0" />
+                <span className="truncate">{t(item.labelKey)}</span>
               </Button>
             );
           })}

@@ -12,16 +12,14 @@ interface QuickActionCardProps {
 }
 
 const QuickActionCard = ({ icon: Icon, label, onClick, variant = "default", children }: QuickActionCardProps) => {
-  const ButtonWrapper = children ? 'div' : Button;
-  
   if (children) {
     return (
       <div>
         {React.cloneElement(children as React.ReactElement, {
           children: (
-            <Button variant={variant} className="h-20 flex-col w-full">
-              <Icon className="w-6 h-6 mb-2" />
-              <span className="font-medium">{label}</span>
+            <Button variant={variant} className="h-24 flex-col gap-3 w-full text-center px-4 py-6">
+              <Icon className="w-6 h-6 flex-shrink-0" />
+              <span className="font-medium text-sm leading-tight">{label}</span>
             </Button>
           )
         })}
@@ -30,9 +28,9 @@ const QuickActionCard = ({ icon: Icon, label, onClick, variant = "default", chil
   }
 
   return (
-    <Button variant={variant} className="h-20 flex-col w-full" onClick={onClick}>
-      <Icon className="w-6 h-6 mb-2" />
-      <span className="font-medium">{label}</span>
+    <Button variant={variant} className="h-24 flex-col gap-3 w-full text-center px-4 py-6" onClick={onClick}>
+      <Icon className="w-6 h-6 flex-shrink-0" />
+      <span className="font-medium text-sm leading-tight">{label}</span>
     </Button>
   );
 };

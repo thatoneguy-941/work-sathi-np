@@ -51,27 +51,27 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-6 rounded-lg">
-        <h2 className="text-2xl font-medium mb-2">{t('welcomeBack')}</h2>
-        <p className="text-blue-100 font-normal">{t('dashboardSubtitle')}</p>
+      <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-8 rounded-xl">
+        <h1 className="text-3xl font-medium mb-3">{t('welcomeBack')}</h1>
+        <p className="text-blue-100 text-lg">{t('dashboardSubtitle')}</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <StatCard key={index} {...stat} />
         ))}
       </div>
 
       {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="font-medium">{t('quickActions')}</CardTitle>
+      <Card className="shadow-sm">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-xl font-medium">{t('quickActions')}</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <CardContent className="pt-0">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <AddClientModal>
               <QuickActionCard icon={Plus} label={t('addClient')} />
             </AddClientModal>

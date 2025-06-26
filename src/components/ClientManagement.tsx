@@ -11,10 +11,11 @@ const ClientManagement = () => {
   const [clients] = useState([]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold font-sans">{t('clientManagementTitle')}</h2>
+          <h1 className="text-3xl font-medium text-foreground">{t('clientManagementTitle')}</h1>
+          <p className="text-muted-foreground mt-2">Manage your client relationships</p>
         </div>
         <AddClientModal>
           <QuickActionCard icon={Plus} label={t('addClient')} />

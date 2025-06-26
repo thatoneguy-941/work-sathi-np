@@ -15,17 +15,19 @@ interface StatCardProps {
 const StatCard = ({ title, value, trend, icon: Icon, color, onClick }: StatCardProps) => {
   return (
     <Card 
-      className={`hover:shadow-md transition-shadow ${onClick ? 'cursor-pointer' : ''}`}
+      className={`hover:shadow-lg transition-all duration-200 ${onClick ? 'cursor-pointer hover:scale-105' : ''} shadow-sm`}
       onClick={onClick}
     >
-      <CardContent className="p-4">
+      <CardContent className="p-6">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <p className="text-xl font-medium mt-1">{value}</p>
-            {trend && <p className={`text-sm ${color}`}>{trend}</p>}
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-muted-foreground mb-2">{title}</p>
+            <p className="text-2xl font-semibold text-foreground mb-1 truncate">{value}</p>
+            {trend && <p className={`text-sm font-medium ${color}`}>{trend}</p>}
           </div>
-          <Icon className={`w-8 h-8 ${color}`} />
+          <div className="ml-4 flex-shrink-0">
+            <Icon className={`w-8 h-8 ${color}`} />
+          </div>
         </div>
       </CardContent>
     </Card>
