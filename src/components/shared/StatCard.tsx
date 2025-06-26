@@ -22,7 +22,7 @@ const StatCard = ({ title, value, trend, icon: Icon, color, onClick }: StatCardP
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <p className="text-2xl font-bold mt-1">{value}</p>
+            <p className="text-xl font-medium mt-1">{value}</p>
             {trend && <p className={`text-sm ${color}`}>{trend}</p>}
           </div>
           <Icon className={`w-8 h-8 ${color}`} />

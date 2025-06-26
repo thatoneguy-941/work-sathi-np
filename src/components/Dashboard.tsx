@@ -54,8 +54,8 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
     <div className="space-y-6">
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-6 rounded-lg">
-        <h2 className="text-2xl font-bold mb-2 font-sans">{t('welcomeBack')}</h2>
-        <p className="text-blue-100 font-medium">{t('dashboardSubtitle')}</p>
+        <h2 className="text-2xl font-medium mb-2">{t('welcomeBack')}</h2>
+        <p className="text-blue-100 font-normal">{t('dashboardSubtitle')}</p>
       </div>
 
       {/* Stats Grid */}
@@ -68,7 +68,7 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <CardTitle className="font-semibold">{t('quickActions')}</CardTitle>
+          <CardTitle className="font-medium">{t('quickActions')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
