@@ -68,18 +68,18 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
       {/* Quick Actions */}
       <Card className="shadow-sm">
         <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-medium">Quick actions</CardTitle>
+          <CardTitle className="text-xl font-medium">{t('quickActions')}</CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <AddClientModal>
-              <QuickActionCard icon={Plus} label={t('addClient')} variant="default" />
+              <QuickActionCard icon={Plus} label={t('addClient')} />
             </AddClientModal>
             <AddProjectModal>
-              <QuickActionCard icon={Plus} label={t('newProject')} variant="default" />
+              <QuickActionCard icon={Plus} label={t('newProject')} />
             </AddProjectModal>
             <AddInvoiceModal>
-              <QuickActionCard icon={FileText} label={t('createInvoice')} variant="default" />
+              <QuickActionCard icon={FileText} label={t('createInvoice')} />
             </AddInvoiceModal>
           </div>
         </CardContent>
@@ -88,11 +88,11 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
       {/* Getting Started Guide */}
       <EmptyState
         icon={Users}
-        title="No data yet"
-        description="Start by adding your first client"
+        title={t('noDataYet')}
+        description={t('startByAddingClient')}
         action={
           <AddClientModal>
-            <QuickActionCard icon={Plus} label="Add first client" variant="default" />
+            <QuickActionCard icon={Plus} label={t('addFirstClient')} />
           </AddClientModal>
         }
       />

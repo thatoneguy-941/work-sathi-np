@@ -14,23 +14,23 @@ const ClientManagement = () => {
     <div className="space-y-8">
       <div className="flex justify-between items-start gap-6">
         <div className="flex-1 min-w-0">
-          <h1 className="text-heading mb-2">Client management</h1>
-          <p className="text-caption">Manage your client relationships and contacts</p>
+          <h1 className="text-3xl font-semibold text-gray-900 mb-2">{t('clientManagement')}</h1>
+          <p className="text-gray-600">{t('managementDesc')}</p>
         </div>
         <div className="flex-shrink-0">
           <AddClientModal>
-            <QuickActionCard icon={Plus} label={t('addClient')} variant="default" />
+            <QuickActionCard icon={Plus} label={t('addClient')} />
           </AddClientModal>
         </div>
       </div>
 
       <EmptyState
         icon={Users}
-        title="No clients yet"
-        description="Add your first client to get started"
+        title={t('noClientsYet')}
+        description={t('addFirstClientDesc')}
         action={
           <AddClientModal>
-            <QuickActionCard icon={Plus} label="Add first client" variant="default" />
+            <QuickActionCard icon={Plus} label={t('addFirstClient')} />
           </AddClientModal>
         }
       />

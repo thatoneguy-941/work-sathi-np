@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'en' | 'np';
@@ -67,7 +68,26 @@ const translations = {
     createFirstInvoice: "Create your first invoice to start billing clients.",
     createFirstInvoiceButton: "Create Invoice",
     noClientsYet: "No clients yet",
-    addFirstClientDesc: "Add your first client to start managing your freelance business."
+    addFirstClientDesc: "Add your first client to start managing your freelance business.",
+    addClient: "Add Client",
+    newProject: "New Project",
+    createInvoice: "Create Invoice",
+    totalIncome: "Total Income",
+    activeClients: "Active Clients",
+    pendingInvoices: "Pending Invoices",
+    thisMonth: "This Month",
+    welcomeBack: "Welcome back!",
+    dashboardSubtitle: "Here's what's happening with your freelance business today.",
+    quickActions: "Quick Actions",
+    gettingStarted: "Getting Started",
+    noDataYet: "No data yet",
+    startByAddingClient: "Start by adding your first client",
+    addFirstClient: "Add first client",
+    managementDesc: "Manage your client relationships and contacts",
+    trackDesc: "Track and manage your project progress",
+    generateDesc: "Generate and track your invoices",
+    createFirstProjectDesc: "Create your first project",
+    createFirstInvoiceDesc: "Create your first invoice"
   },
   np: {
     heroTitle: 'वर्कसाथी',
@@ -108,14 +128,14 @@ const translations = {
     upgradeRequired: 'अपग्रेड आवश्यक',
     upgradeFeatureMessage: '{feature} सुविधा हाम्रो प्रो योजनामा मात्र उपलब्ध छ।',
     maybeLater: 'सायद पछि',
-    projectManagement: "प्रोजेक्ट व्यवस्थापन",
-    totalProjects: "कुल प्रोजेक्टहरू",
+    projectManagement: "परियोजना व्यवस्थापन",
+    totalProjects: "कुल परियोजनाहरू",
     completed: "सम्पन्न",
     inProgress: "प्रगतिमा",
     totalValue: "कुल मूल्य",
-    noProjectsYet: "अझै प्रोजेक्टहरू छैनन्",
-    createFirstProject: "तपाईंको काम ट्र्याक गर्न पहिलो प्रोजेक्ट सिर्जना गर्नुहोस्।",
-    createProject: "प्रोजेक्ट सिर्जना गर्नुहोस्",
+    noProjectsYet: "अझै परियोजनाहरू छैनन्",
+    createFirstProject: "तपाईंको काम ट्र्याक गर्न पहिलो परियोजना सिर्जना गर्नुहोस्।",
+    createProject: "परियोजना सिर्जना गर्नुहोस्",
     invoiceManagement: "बिल व्यवस्थापन",
     paidThisMonth: "यस महिना भुक्तानी",
     pending: "बाँकी",
@@ -125,7 +145,26 @@ const translations = {
     createFirstInvoice: "ग्राहकहरूलाई बिलिङ सुरु गर्न पहिलो बिल सिर्जना गर्नुहोस्।",
     createFirstInvoiceButton: "बिल सिर्जना गर्नुहोस्",
     noClientsYet: "अझै ग्राहकहरू छैनन्",
-    addFirstClientDesc: "तपाईंको फ्रीलान्स व्यवसाय व्यवस्थापन सुरु गर्न पहिलो ग्राहक थप्नुहोस्।"
+    addFirstClientDesc: "तपाईंको फ्रीलान्स व्यवसाय व्यवस्थापन सुरु गर्न पहिलो ग्राहक थप्नुहोस्।",
+    addClient: "ग्राहक थप्नुहोस्",
+    newProject: "नयाँ परियोजना",
+    createInvoice: "बिल सिर्जना गर्नुहोस्",
+    totalIncome: "कुल आम्दानी",
+    activeClients: "सक्रिय ग्राहकहरू",
+    pendingInvoices: "बाँकी बिलहरू",
+    thisMonth: "यस महिना",
+    welcomeBack: "फिर्ता स्वागत छ!",
+    dashboardSubtitle: "आज तपाईंको फ्रीलान्स व्यवसायमा के भइरहेको छ।",
+    quickActions: "छिटो कार्यहरू",
+    gettingStarted: "सुरुवात गर्दै",
+    noDataYet: "अझै डाटा छैन",
+    startByAddingClient: "पहिलो ग्राहक थपेर सुरु गर्नुहोस्",
+    addFirstClient: "पहिलो ग्राहक थप्नुहोस्",
+    managementDesc: "तपाईंको ग्राहक सम्बन्ध र सम्पर्कहरू व्यवस्थापन गर्नुहोस्",
+    trackDesc: "तपाईंको परियोजना प्रगति ट्र्याक र व्यवस्थापन गर्नुहोस्",
+    generateDesc: "तपाईंका बिलहरू उत्पन्न र ट्र्याक गर्नुहोस्",
+    createFirstProjectDesc: "तपाईंको पहिलो परियोजना सिर्जना गर्नुहोस्",
+    createFirstInvoiceDesc: "तपाईंको पहिलो बिल सिर्जना गर्नुहोस्"
   }
 };
 
