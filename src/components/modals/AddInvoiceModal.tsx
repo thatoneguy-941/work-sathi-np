@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -14,45 +14,85 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { createInvoice, getProjects, type Invoice, type Project } from '@/lib/database';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface AddInvoiceModalProps {
   children: React.ReactNode;
-  onInvoiceAdded?: () => void;
+  onInvoiceAdded?: (invoice: Invoice) => void;
 }
 
 const AddInvoiceModal = ({ children, onInvoiceAdded }: AddInvoiceModalProps) => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [formData, setFormData] = useState({
-    client: '',
-    project: '',
+    project_id: '',
+    issue_date: new Date().toISOString().split('T')[0],
+    due_date: '',
     amount: '',
-    dueDate: '',
-    description: '',
-    status: 'draft'
+    payment_link: '',
+    status: 'Unpaid' as const
   });
   const { toast } = useToast();
+  const { t } = useLanguage();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (open) {
+      loadProjects();
+    }
+  }, [open]);
+
+  const loadProjects = async () => {
+    try {
+      const projectsData = await getProjects();
+      setProjects(projectsData);
+    } catch (error) {
+      console.error('Error loading projects:', error);
+      toast({
+        title: t('error'),
+        description: t('failedToLoadProjects'),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     
-    console.log('Creating invoice:', formData);
-    
-    toast({
-      title: "Invoice Created",
-      description: `Invoice for Rs. ${formData.amount} has been created successfully.`,
-    });
-    
-    setFormData({
-      client: '',
-      project: '',
-      amount: '',
-      dueDate: '',
-      description: '',
-      status: 'draft'
-    });
-    
-    setOpen(false);
-    onInvoiceAdded?.();
+    try {
+      const invoice = await createInvoice({
+        ...formData,
+        amount: parseFloat(formData.amount)
+      });
+      
+      toast({
+        title: t('invoiceCreated'),
+        description: `${t('invoiceFor')} Rs. ${formData.amount} ${t('hasBeenCreatedSuccessfully')}`,
+      });
+      
+      setFormData({
+        project_id: '',
+        issue_date: new Date().toISOString().split('T')[0],
+        due_date: '',
+        amount: '',
+        payment_link: '',
+        status: 'Unpaid'
+      });
+      
+      setOpen(false);
+      onInvoiceAdded?.(invoice);
+    } catch (error) {
+      console.error('Error creating invoice:', error);
+      toast({
+        title: t('error'),
+        description: t('failedToCreateInvoice'),
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,78 +102,88 @@ const AddInvoiceModal = ({ children, onInvoiceAdded }: AddInvoiceModalProps) => 
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Invoice</DialogTitle>
+          <DialogTitle>{t('createInvoice')}</DialogTitle>
           <DialogDescription>
-            Create a new invoice for your client.
+            {t('createInvoiceDesc')}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="invoice-client">Client *</Label>
-            <Input
-              id="invoice-client"
-              placeholder="Client name"
-              value={formData.client}
-              onChange={(e) => setFormData(prev => ({ ...prev, client: e.target.value }))}
-              required
-            />
+            <Label>{t('project')} *</Label>
+            <Select value={formData.project_id} onValueChange={(value) => setFormData(prev => ({ ...prev, project_id: value }))}>
+              <SelectTrigger disabled={loading}>
+                <SelectValue placeholder={t('selectProject')} />
+              </SelectTrigger>
+              <SelectContent>
+                {projects.map((project) => (
+                  <SelectItem key={project.id} value={project.id}>
+                    {project.project_name} - {project.client?.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="invoice-project">Project</Label>
-            <Input
-              id="invoice-project"
-              placeholder="Project name"
-              value={formData.project}
-              onChange={(e) => setFormData(prev => ({ ...prev, project: e.target.value }))}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount (Rs.) *</Label>
+            <Label htmlFor="amount">{t('amount')} (Rs.) *</Label>
             <Input
               id="amount"
               type="number"
+              step="0.01"
               value={formData.amount}
               onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
               required
+              disabled={loading}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="due-date">Due Date</Label>
+            <Label htmlFor="issue-date">{t('issueDate')}</Label>
+            <Input
+              id="issue-date"
+              type="date"
+              value={formData.issue_date}
+              onChange={(e) => setFormData(prev => ({ ...prev, issue_date: e.target.value }))}
+              disabled={loading}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="due-date">{t('dueDate')}</Label>
             <Input
               id="due-date"
               type="date"
-              value={formData.dueDate}
-              onChange={(e) => setFormData(prev => ({ ...prev, dueDate: e.target.value }))}
+              value={formData.due_date}
+              onChange={(e) => setFormData(prev => ({ ...prev, due_date: e.target.value }))}
+              disabled={loading}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="invoice-description">Description</Label>
-            <Textarea
-              id="invoice-description"
-              placeholder="Invoice description or items"
-              value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+            <Label htmlFor="payment-link">{t('paymentLink')}</Label>
+            <Input
+              id="payment-link"
+              placeholder="eSewa/Khalti QR or payment link"
+              value={formData.payment_link}
+              onChange={(e) => setFormData(prev => ({ ...prev, payment_link: e.target.value }))}
+              disabled={loading}
             />
           </div>
           <div className="space-y-2">
-            <Label>Status</Label>
-            <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
-              <SelectTrigger>
+            <Label>{t('status')}</Label>
+            <Select value={formData.status} onValueChange={(value: any) => setFormData(prev => ({ ...prev, status: value }))}>
+              <SelectTrigger disabled={loading}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="sent">Sent</SelectItem>
-                <SelectItem value="paid">Paid</SelectItem>
-                <SelectItem value="overdue">Overdue</SelectItem>
+                <SelectItem value="Unpaid">{t('unpaid')}</SelectItem>
+                <SelectItem value="Paid">{t('paid')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancel
+            <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={loading}>
+              {t('cancel')}
             </Button>
-            <Button type="submit">Create Invoice</Button>
+            <Button type="submit" disabled={loading || !formData.project_id || !formData.amount}>
+              {loading ? t('creating') : t('createInvoice')}
+            </Button>
           </div>
         </form>
       </DialogContent>

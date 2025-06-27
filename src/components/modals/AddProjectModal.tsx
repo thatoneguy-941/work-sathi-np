@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -14,45 +14,80 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { createProject, getClients, type Project, type Client } from '@/lib/database';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface AddProjectModalProps {
   children: React.ReactNode;
-  onProjectAdded?: () => void;
+  onProjectAdded?: (project: Project) => void;
 }
 
 const AddProjectModal = ({ children, onProjectAdded }: AddProjectModalProps) => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [clients, setClients] = useState<Client[]>([]);
   const [formData, setFormData] = useState({
-    name: '',
-    client: '',
+    project_name: '',
+    client_id: '',
     description: '',
-    budget: '',
     deadline: '',
-    status: 'planning'
+    status: 'Pending' as const
   });
   const { toast } = useToast();
+  const { t } = useLanguage();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (open) {
+      loadClients();
+    }
+  }, [open]);
+
+  const loadClients = async () => {
+    try {
+      const clientsData = await getClients();
+      setClients(clientsData);
+    } catch (error) {
+      console.error('Error loading clients:', error);
+      toast({
+        title: t('error'),
+        description: t('failedToLoadClients'),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     
-    console.log('Adding project:', formData);
-    
-    toast({
-      title: "Project Created",
-      description: `${formData.name} has been created successfully.`,
-    });
-    
-    setFormData({
-      name: '',
-      client: '',
-      description: '',
-      budget: '',
-      deadline: '',
-      status: 'planning'
-    });
-    
-    setOpen(false);
-    onProjectAdded?.();
+    try {
+      const project = await createProject(formData);
+      
+      toast({
+        title: t('projectCreated'),
+        description: `${formData.project_name} ${t('hasBeenCreatedSuccessfully')}`,
+      });
+      
+      setFormData({
+        project_name: '',
+        client_id: '',
+        description: '',
+        deadline: '',
+        status: 'Pending'
+      });
+      
+      setOpen(false);
+      onProjectAdded?.(project);
+    } catch (error) {
+      console.error('Error creating project:', error);
+      toast({
+        title: t('error'),
+        description: t('failedToCreateProject'),
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,75 +97,76 @@ const AddProjectModal = ({ children, onProjectAdded }: AddProjectModalProps) => 
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create New Project</DialogTitle>
+          <DialogTitle>{t('createNewProject')}</DialogTitle>
           <DialogDescription>
-            Create a new project for your client.
+            {t('createNewProjectDesc')}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="project-name">Project Name *</Label>
+            <Label htmlFor="project-name">{t('projectName')} *</Label>
             <Input
               id="project-name"
-              value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              value={formData.project_name}
+              onChange={(e) => setFormData(prev => ({ ...prev, project_name: e.target.value }))}
               required
+              disabled={loading}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="client-select">Client</Label>
-            <Input
-              id="client-select"
-              placeholder="Client name"
-              value={formData.client}
-              onChange={(e) => setFormData(prev => ({ ...prev, client: e.target.value }))}
-            />
+            <Label>{t('client')} *</Label>
+            <Select value={formData.client_id} onValueChange={(value) => setFormData(prev => ({ ...prev, client_id: value }))}>
+              <SelectTrigger disabled={loading}>
+                <SelectValue placeholder={t('selectClient')} />
+              </SelectTrigger>
+              <SelectContent>
+                {clients.map((client) => (
+                  <SelectItem key={client.id} value={client.id}>
+                    {client.name} {client.company && `(${client.company})`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t('description')}</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              disabled={loading}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="budget">Budget (Rs.)</Label>
-            <Input
-              id="budget"
-              type="number"
-              value={formData.budget}
-              onChange={(e) => setFormData(prev => ({ ...prev, budget: e.target.value }))}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="deadline">Deadline</Label>
+            <Label htmlFor="deadline">{t('deadline')}</Label>
             <Input
               id="deadline"
               type="date"
               value={formData.deadline}
               onChange={(e) => setFormData(prev => ({ ...prev, deadline: e.target.value }))}
+              disabled={loading}
             />
           </div>
           <div className="space-y-2">
-            <Label>Status</Label>
-            <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
-              <SelectTrigger>
+            <Label>{t('status')}</Label>
+            <Select value={formData.status} onValueChange={(value: any) => setFormData(prev => ({ ...prev, status: value }))}>
+              <SelectTrigger disabled={loading}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="planning">Planning</SelectItem>
-                <SelectItem value="in-progress">In Progress</SelectItem>
-                <SelectItem value="review">Review</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="Pending">{t('pending')}</SelectItem>
+                <SelectItem value="In Progress">{t('inProgress')}</SelectItem>
+                <SelectItem value="Completed">{t('completed')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancel
+            <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={loading}>
+              {t('cancel')}
             </Button>
-            <Button type="submit">Create Project</Button>
+            <Button type="submit" disabled={loading || !formData.client_id}>
+              {loading ? t('creating') : t('createProject')}
+            </Button>
           </div>
         </form>
       </DialogContent>
