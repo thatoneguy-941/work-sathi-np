@@ -12,22 +12,22 @@ const ProjectManagement = () => {
   const [projects] = useState([]);
 
   const stats = [
-    { title: t('totalProjects'), value: '0', icon: FolderOpen, color: 'text-blue-600' },
-    { title: t('completed'), value: '0', icon: FolderOpen, color: 'text-green-600' },
-    { title: t('inProgress'), value: '0', icon: FolderOpen, color: 'text-orange-600' },
-    { title: t('totalValue'), value: 'Rs. 0', icon: FolderOpen, color: 'text-purple-600' }
+    { title: 'Total projects', value: '0', icon: FolderOpen, color: 'text-blue-600' },
+    { title: 'Completed', value: '0', icon: FolderOpen, color: 'text-green-600' },
+    { title: 'In progress', value: '0', icon: FolderOpen, color: 'text-orange-600' },
+    { title: 'Total value', value: 'Rs. 0', icon: FolderOpen, color: 'text-purple-600' }
   ];
 
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-start gap-6">
         <div className="flex-1 min-w-0">
-          <h1 className="text-heading mb-2">{t('projectManagement')}</h1>
+          <h1 className="text-heading mb-2">Project management</h1>
           <p className="text-caption">Track and manage your project progress</p>
         </div>
         <div className="flex-shrink-0">
           <AddProjectModal>
-            <QuickActionCard icon={Plus} label={t('newProject')} />
+            <QuickActionCard icon={Plus} label={t('newProject')} variant="default" />
           </AddProjectModal>
         </div>
       </div>
@@ -41,11 +41,11 @@ const ProjectManagement = () => {
 
       <EmptyState
         icon={FolderOpen}
-        title={t('noProjectsYet')}
-        description={t('createFirstProject')}
+        title="No projects yet"
+        description="Create your first project"
         action={
           <AddProjectModal>
-            <QuickActionCard icon={Plus} label={t('createProject')} />
+            <QuickActionCard icon={Plus} label="Create project" variant="default" />
           </AddProjectModal>
         }
       />

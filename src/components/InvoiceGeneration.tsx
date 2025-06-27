@@ -12,22 +12,22 @@ const InvoiceGeneration = () => {
   const [invoices] = useState([]);
 
   const stats = [
-    { title: t('paidThisMonth'), value: 'Rs. 0', icon: FileText, color: 'text-green-600' },
-    { title: t('pending'), value: 'Rs. 0', icon: FileText, color: 'text-yellow-600' },
-    { title: t('overdue'), value: 'Rs. 0', icon: FileText, color: 'text-red-600' },
-    { title: t('totalInvoices'), value: '0', icon: FileText, color: 'text-blue-600' }
+    { title: 'Paid this month', value: 'Rs. 0', icon: FileText, color: 'text-green-600' },
+    { title: 'Pending', value: 'Rs. 0', icon: FileText, color: 'text-yellow-600' },
+    { title: 'Overdue', value: 'Rs. 0', icon: FileText, color: 'text-red-600' },
+    { title: 'Total invoices', value: '0', icon: FileText, color: 'text-blue-600' }
   ];
 
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-start gap-6">
         <div className="flex-1 min-w-0">
-          <h1 className="text-heading mb-2">{t('invoiceManagement')}</h1>
+          <h1 className="text-heading mb-2">Invoice management</h1>
           <p className="text-caption">Generate and track your invoices</p>
         </div>
         <div className="flex-shrink-0">
           <AddInvoiceModal>
-            <QuickActionCard icon={Plus} label={t('createInvoice')} />
+            <QuickActionCard icon={Plus} label={t('createInvoice')} variant="default" />
           </AddInvoiceModal>
         </div>
       </div>
@@ -41,11 +41,11 @@ const InvoiceGeneration = () => {
 
       <EmptyState
         icon={FileText}
-        title={t('noInvoicesYet')}
-        description={t('createFirstInvoice')}
+        title="No invoices yet"
+        description="Create your first invoice"
         action={
           <AddInvoiceModal>
-            <QuickActionCard icon={Plus} label={t('createFirstInvoiceButton')} />
+            <QuickActionCard icon={Plus} label="Create first invoice" variant="default" />
           </AddInvoiceModal>
         }
       />
