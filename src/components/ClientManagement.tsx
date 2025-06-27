@@ -12,10 +12,10 @@ const ClientManagement = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center gap-4">
+      <div className="flex justify-between items-start gap-6">
         <div className="flex-1 min-w-0">
-          <h1 className="text-3xl font-medium text-foreground capitalize">{t('clientManagementTitle')}</h1>
-          <p className="text-muted-foreground mt-2">Manage your client relationships</p>
+          <h1 className="text-heading mb-2">{t('clientManagementTitle')}</h1>
+          <p className="text-caption">Manage your client relationships and contacts</p>
         </div>
         <div className="flex-shrink-0">
           <AddClientModal>

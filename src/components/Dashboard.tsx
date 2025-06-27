@@ -54,11 +54,11 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
     <div className="space-y-8">
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white p-8 rounded-xl">
-        <h1 className="text-3xl font-medium mb-3">{t('welcomeBack')}</h1>
-        <p className="text-blue-100 text-lg">{t('dashboardSubtitle')}</p>
+        <h1 className="text-3xl font-semibold mb-3">{t('welcomeBack')}</h1>
+        <p className="text-blue-100 text-lg font-normal">{t('dashboardSubtitle')}</p>
       </div>
 
-      {/* Stats Grid */}
+      {/* Statistics Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <StatCard key={index} {...stat} />
@@ -85,7 +85,7 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
         </CardContent>
       </Card>
 
-      {/* Getting Started Section */}
+      {/* Getting Started Guide */}
       <EmptyState
         icon={Users}
         title={t('noDataYet')}

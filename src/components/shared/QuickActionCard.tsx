@@ -9,30 +9,41 @@ interface QuickActionCardProps {
   onClick?: () => void;
   variant?: "default" | "outline";
   children?: React.ReactNode;
+  size?: "default" | "compact";
 }
 
-const QuickActionCard = ({ icon: Icon, label, onClick, variant = "default", children }: QuickActionCardProps) => {
+const QuickActionCard = ({ 
+  icon: Icon, 
+  label, 
+  onClick, 
+  variant = "default", 
+  children,
+  size = "default"
+}: QuickActionCardProps) => {
+  const isCompact = size === "compact";
+  
+  const buttonContent = (
+    <Button 
+      variant={variant} 
+      className={`${isCompact ? 'h-16 px-4 py-3' : 'h-24 px-6 py-4'} flex-col gap-2 w-full text-center font-medium`}
+      onClick={onClick}
+    >
+      <Icon className={`${isCompact ? 'w-4 h-4' : 'w-5 h-5'} flex-shrink-0`} />
+      <span className={`${isCompact ? 'text-xs' : 'text-sm'} leading-tight`}>{label}</span>
+    </Button>
+  );
+
   if (children) {
     return (
       <div>
         {React.cloneElement(children as React.ReactElement, {
-          children: (
-            <Button variant={variant} className="h-24 flex-col gap-3 w-full text-center px-6 py-6">
-              <Icon className="w-6 h-6 flex-shrink-0" />
-              <span className="font-medium text-sm leading-tight px-2">{label}</span>
-            </Button>
-          )
+          children: buttonContent
         })}
       </div>
     );
   }
 
-  return (
-    <Button variant={variant} className="h-24 flex-col gap-3 w-full text-center px-6 py-6" onClick={onClick}>
-      <Icon className="w-6 h-6 flex-shrink-0" />
-      <span className="font-medium text-sm leading-tight px-2">{label}</span>
-    </Button>
-  );
+  return buttonContent;
 };
 
 export default QuickActionCard;

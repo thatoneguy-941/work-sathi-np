@@ -20,17 +20,19 @@ const ProjectManagement = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-medium text-foreground">{t('projectManagement')}</h1>
-          <p className="text-muted-foreground mt-2">Track and manage your projects</p>
+      <div className="flex justify-between items-start gap-6">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-heading mb-2">{t('projectManagement')}</h1>
+          <p className="text-caption">Track and manage your project progress</p>
         </div>
-        <AddProjectModal>
-          <QuickActionCard icon={Plus} label={t('newProject')} />
-        </AddProjectModal>
+        <div className="flex-shrink-0">
+          <AddProjectModal>
+            <QuickActionCard icon={Plus} label={t('newProject')} />
+          </AddProjectModal>
+        </div>
       </div>
 
-      {/* Project Stats */}
+      {/* Project Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <StatCard key={index} {...stat} />

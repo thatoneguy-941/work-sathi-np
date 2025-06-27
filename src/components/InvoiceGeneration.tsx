@@ -20,17 +20,19 @@ const InvoiceGeneration = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-medium text-foreground">{t('invoiceManagement')}</h1>
-          <p className="text-muted-foreground mt-2">Generate and track your invoices</p>
+      <div className="flex justify-between items-start gap-6">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-heading mb-2">{t('invoiceManagement')}</h1>
+          <p className="text-caption">Generate and track your invoices</p>
         </div>
-        <AddInvoiceModal>
-          <QuickActionCard icon={Plus} label={t('createInvoice')} />
-        </AddInvoiceModal>
+        <div className="flex-shrink-0">
+          <AddInvoiceModal>
+            <QuickActionCard icon={Plus} label={t('createInvoice')} />
+          </AddInvoiceModal>
+        </div>
       </div>
 
-      {/* Invoice Stats */}
+      {/* Invoice Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <StatCard key={index} {...stat} />
