@@ -11,7 +11,7 @@ const LanguageToggle = () => {
     <Button 
       variant="ghost" 
       size="sm" 
-      onClick={() => setLanguage(language === 'en' ? 'np' : 'en')}
+      onClick={() => setLanguage(language === 'en' ? 'ne' : 'en')}
       className="flex items-center space-x-2"
     >
       <Globe className="w-4 h-4" />

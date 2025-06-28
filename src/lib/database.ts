@@ -44,9 +44,12 @@ export type Invoice = {
 
 // Client operations
 export const createClient = async (clientData: Omit<Client, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { data, error } = await supabase
     .from('clients')
-    .insert([clientData])
+    .insert([{ ...clientData, user_id: user.id }])
     .select()
     .single();
   
@@ -87,9 +90,12 @@ export const deleteClient = async (id: string) => {
 
 // Project operations
 export const createProject = async (projectData: Omit<Project, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'client'>) => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { data, error } = await supabase
     .from('projects')
-    .insert([projectData])
+    .insert([{ ...projectData, user_id: user.id }])
     .select(`
       *,
       client:clients(*)
@@ -139,9 +145,12 @@ export const deleteProject = async (id: string) => {
 
 // Invoice operations
 export const createInvoice = async (invoiceData: Omit<Invoice, 'id' | 'user_id' | 'invoice_number' | 'created_at' | 'updated_at' | 'project'>) => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const { data, error } = await supabase
     .from('invoices')
-    .insert([invoiceData])
+    .insert([{ ...invoiceData, user_id: user.id }])
     .select(`
       *,
       project:projects(
