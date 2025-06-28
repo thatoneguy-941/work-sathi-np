@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, FolderOpen, Edit, Trash2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import AddProjectModal from '@/components/modals/AddProjectModal';
+import EditProjectModal from '@/components/modals/EditProjectModal';
 import StatCard from '@/components/shared/StatCard';
 import EmptyState from '@/components/shared/EmptyState';
 import QuickActionCard from '@/components/shared/QuickActionCard';
@@ -40,6 +41,10 @@ const ProjectManagement = () => {
 
   const handleProjectAdded = (newProject: Project) => {
     setProjects(prev => [newProject, ...prev]);
+  };
+
+  const handleProjectUpdated = (updatedProject: Project) => {
+    setProjects(prev => prev.map(p => p.id === updatedProject.id ? updatedProject : p));
   };
 
   const handleDeleteProject = async (projectId: string) => {
@@ -156,9 +161,11 @@ const ProjectManagement = () => {
                   <TableCell>{project.deadline ? new Date(project.deadline).toLocaleDateString() : '-'}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="w-4 h-4" />
-                      </Button>
+                      <EditProjectModal project={project} onProjectUpdated={handleProjectUpdated}>
+                        <Button size="sm" variant="outline">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                      </EditProjectModal>
                       <Button 
                         size="sm" 
                         variant="outline"

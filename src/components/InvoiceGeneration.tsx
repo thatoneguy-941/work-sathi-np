@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, FileText, Edit, Trash2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import AddInvoiceModal from '@/components/modals/AddInvoiceModal';
+import EditInvoiceModal from '@/components/modals/EditInvoiceModal';
 import StatCard from '@/components/shared/StatCard';
 import EmptyState from '@/components/shared/EmptyState';
 import QuickActionCard from '@/components/shared/QuickActionCard';
@@ -40,6 +41,10 @@ const InvoiceGeneration = () => {
 
   const handleInvoiceAdded = (newInvoice: Invoice) => {
     setInvoices(prev => [newInvoice, ...prev]);
+  };
+
+  const handleInvoiceUpdated = (updatedInvoice: Invoice) => {
+    setInvoices(prev => prev.map(i => i.id === updatedInvoice.id ? updatedInvoice : i));
   };
 
   const handleDeleteInvoice = async (invoiceId: string) => {
@@ -197,9 +202,11 @@ const InvoiceGeneration = () => {
                   </TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="w-4 h-4" />
-                      </Button>
+                      <EditInvoiceModal invoice={invoice} onInvoiceUpdated={handleInvoiceUpdated}>
+                        <Button size="sm" variant="outline">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                      </EditInvoiceModal>
                       <Button 
                         size="sm" 
                         variant="outline"

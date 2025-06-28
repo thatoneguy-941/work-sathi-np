@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Users, Edit, Trash2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import AddClientModal from '@/components/modals/AddClientModal';
+import EditClientModal from '@/components/modals/EditClientModal';
 import EmptyState from '@/components/shared/EmptyState';
 import QuickActionCard from '@/components/shared/QuickActionCard';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -38,6 +39,10 @@ const ClientManagement = () => {
 
   const handleClientAdded = (newClient: Client) => {
     setClients(prev => [newClient, ...prev]);
+  };
+
+  const handleClientUpdated = (updatedClient: Client) => {
+    setClients(prev => prev.map(c => c.id === updatedClient.id ? updatedClient : c));
   };
 
   const handleDeleteClient = async (clientId: string) => {
@@ -120,9 +125,11 @@ const ClientManagement = () => {
                   <TableCell>{client.phone || '-'}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="w-4 h-4" />
-                      </Button>
+                      <EditClientModal client={client} onClientUpdated={handleClientUpdated}>
+                        <Button size="sm" variant="outline">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                      </EditClientModal>
                       <Button 
                         size="sm" 
                         variant="outline"
