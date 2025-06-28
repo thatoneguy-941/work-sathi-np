@@ -31,7 +31,8 @@ const AddProjectModal = ({ children, onProjectAdded }: AddProjectModalProps) => 
     client_id: '',
     description: '',
     deadline: '',
-    status: 'Pending' as const
+    status: 'Pending' as const,
+    payment_status: 'Not Paid' as const
   });
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -73,7 +74,8 @@ const AddProjectModal = ({ children, onProjectAdded }: AddProjectModalProps) => 
         client_id: '',
         description: '',
         deadline: '',
-        status: 'Pending'
+        status: 'Pending',
+        payment_status: 'Not Paid'
       });
       
       setOpen(false);
