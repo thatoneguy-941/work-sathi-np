@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Plus, Users, Edit, Trash2, Eye } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -13,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { getClients, deleteClient, type Client } from '@/lib/database';
 
-const ClientManagement = () => {
+const EnhancedClientManagement = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [clients, setClients] = useState<Client[]>([]);
@@ -216,4 +217,4 @@ const ClientManagement = () => {
   );
 };
 
-export default ClientManagement;
+export default EnhancedClientManagement;
