@@ -255,10 +255,10 @@ export const getDashboardStats = async () => {
     })
     .reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
 
-  // Calculate growth percentage
-  const incomeGrowth = lastMonthIncome > 0 
-    ? ((monthlyIncome - lastMonthIncome) / lastMonthIncome * 100).toFixed(1)
-    : monthlyIncome > 0 ? '100' : '0';
+  // Calculate growth percentage as number first, then format as string
+  const incomeGrowthValue = lastMonthIncome > 0 
+    ? ((monthlyIncome - lastMonthIncome) / lastMonthIncome * 100)
+    : monthlyIncome > 0 ? 100 : 0;
 
   const totalIncome = paidInvoices.reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
   const totalPending = unpaidInvoices.reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
@@ -283,7 +283,7 @@ export const getDashboardStats = async () => {
     totalIncome,
     totalPending,
     totalOverdue,
-    incomeGrowth: `${incomeGrowth > 0 ? '+' : ''}${incomeGrowth}%`,
+    incomeGrowth: `${incomeGrowthValue > 0 ? '+' : ''}${incomeGrowthValue.toFixed(1)}%`,
     totalInvoices: invoicesData.data?.length || 0,
     recentInvoices,
     paidInvoicesCount: paidInvoices.length,
