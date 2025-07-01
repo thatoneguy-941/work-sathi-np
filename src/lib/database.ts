@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 
 export type Client = {
@@ -148,9 +147,19 @@ export const createInvoice = async (invoiceData: Omit<Invoice, 'id' | 'user_id' 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('User not authenticated');
 
+  // Generate QR code for eSewa/Khalti if amount is provided
+  let paymentLink = invoiceData.payment_link || '';
+  if (invoiceData.amount && !paymentLink) {
+    paymentLink = generatePaymentQR(invoiceData.amount);
+  }
+
   const { data, error } = await supabase
     .from('invoices')
-    .insert([{ ...invoiceData, user_id: user.id }])
+    .insert([{ 
+      ...invoiceData, 
+      user_id: user.id,
+      payment_link: paymentLink
+    }])
     .select(`
       *,
       project:projects(
@@ -207,12 +216,15 @@ export const deleteInvoice = async (id: string) => {
   if (error) throw error;
 };
 
-// Analytics functions
+// Enhanced analytics with real data calculations
 export const getDashboardStats = async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('User not authenticated');
+
   const [clientsData, projectsData, invoicesData] = await Promise.all([
-    supabase.from('clients').select('id').eq('user_id', (await supabase.auth.getUser()).data.user?.id),
-    supabase.from('projects').select('id, status, payment_status'),
-    supabase.from('invoices').select('amount, status, issue_date')
+    supabase.from('clients').select('id').eq('user_id', user.id),
+    supabase.from('projects').select('id, status, payment_status').eq('user_id', user.id),
+    supabase.from('invoices').select('amount, status, issue_date, due_date').eq('user_id', user.id)
   ]);
 
   const totalClients = clientsData.data?.length || 0;
@@ -223,8 +235,11 @@ export const getDashboardStats = async () => {
   const paidInvoices = invoicesData.data?.filter(i => i.status === 'Paid') || [];
   const unpaidInvoices = invoicesData.data?.filter(i => i.status === 'Unpaid') || [];
   
+  // Calculate monthly income from paid invoices
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
+  const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+  const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
   
   const monthlyIncome = paidInvoices
     .filter(invoice => {
@@ -233,10 +248,31 @@ export const getDashboardStats = async () => {
     })
     .reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
 
-  const totalPending = unpaidInvoices.reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
-  const totalOverdue = unpaidInvoices
-    .filter(invoice => new Date(invoice.issue_date) < new Date())
+  const lastMonthIncome = paidInvoices
+    .filter(invoice => {
+      const invoiceDate = new Date(invoice.issue_date);
+      return invoiceDate.getMonth() === lastMonth && invoiceDate.getFullYear() === lastMonthYear;
+    })
     .reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
+
+  // Calculate growth percentage
+  const incomeGrowth = lastMonthIncome > 0 
+    ? ((monthlyIncome - lastMonthIncome) / lastMonthIncome * 100).toFixed(1)
+    : monthlyIncome > 0 ? '100' : '0';
+
+  const totalIncome = paidInvoices.reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
+  const totalPending = unpaidInvoices.reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
+  
+  // Calculate overdue invoices
+  const today = new Date();
+  const totalOverdue = unpaidInvoices
+    .filter(invoice => new Date(invoice.due_date) < today)
+    .reduce((sum, invoice) => sum + (invoice.amount || 0), 0);
+
+  // Recent activity data
+  const recentInvoices = invoicesData.data
+    ?.sort((a, b) => new Date(b.issue_date).getTime() - new Date(a.issue_date).getTime())
+    .slice(0, 5) || [];
 
   return {
     totalClients,
@@ -244,10 +280,44 @@ export const getDashboardStats = async () => {
     completedProjects,
     inProgressProjects,
     monthlyIncome,
+    totalIncome,
     totalPending,
     totalOverdue,
-    totalInvoices: invoicesData.data?.length || 0
+    incomeGrowth: `${incomeGrowth > 0 ? '+' : ''}${incomeGrowth}%`,
+    totalInvoices: invoicesData.data?.length || 0,
+    recentInvoices,
+    paidInvoicesCount: paidInvoices.length,
+    unpaidInvoicesCount: unpaidInvoices.length
   };
+};
+
+// Generate QR code data for eSewa/Khalti payments
+export const generatePaymentQR = (amount: number): string => {
+  // eSewa QR code format for Nepal
+  const esewaData = `esewa://pay?amt=${amount}&pid=INV-${Date.now()}&pcd=EPAYTEST`;
+  return esewaData;
+};
+
+// Enhanced payment status management
+export const updatePaymentStatus = async (invoiceId: string, status: 'Paid' | 'Unpaid') => {
+  const { data, error } = await supabase
+    .from('invoices')
+    .update({ 
+      status: status,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', invoiceId)
+    .select(`
+      *,
+      project:projects(
+        *,
+        client:clients(*)
+      )
+    `)
+    .single();
+  
+  if (error) throw error;
+  return data;
 };
 
 // Check user plan limits

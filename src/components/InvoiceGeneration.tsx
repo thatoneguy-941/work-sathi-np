@@ -1,9 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { Plus, FileText, Edit, Trash2 } from 'lucide-react';
+import { Plus, FileText, Edit, Trash2, QrCode } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import AddInvoiceModal from '@/components/modals/AddInvoiceModal';
 import EditInvoiceModal from '@/components/modals/EditInvoiceModal';
+import PaymentQRModal from '@/components/shared/PaymentQRModal';
 import StatCard from '@/components/shared/StatCard';
 import EmptyState from '@/components/shared/EmptyState';
 import QuickActionCard from '@/components/shared/QuickActionCard';
@@ -11,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { getInvoices, deleteInvoice, updateInvoice, type Invoice } from '@/lib/database';
+import { getInvoices, deleteInvoice, updatePaymentStatus, type Invoice } from '@/lib/database';
 
 const InvoiceGeneration = () => {
   const { t } = useLanguage();
@@ -71,7 +72,7 @@ const InvoiceGeneration = () => {
     const newStatus = currentStatus === 'Paid' ? 'Unpaid' : 'Paid';
     
     try {
-      await updateInvoice(invoiceId, { status: newStatus as any });
+      await updatePaymentStatus(invoiceId, newStatus as any);
       setInvoices(prev => prev.map(inv => 
         inv.id === invoiceId ? { ...inv, status: newStatus as any } : inv
       ));
@@ -97,6 +98,7 @@ const InvoiceGeneration = () => {
     return <Badge variant={variants[status] || 'outline'}>{t(status.toLowerCase())}</Badge>;
   };
 
+  // Calculate statistics
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   
@@ -202,6 +204,15 @@ const InvoiceGeneration = () => {
                   </TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
+                      <PaymentQRModal 
+                        amount={invoice.amount} 
+                        invoiceNumber={invoice.invoice_number}
+                        paymentLink={invoice.payment_link}
+                      >
+                        <Button size="sm" variant="outline">
+                          <QrCode className="w-4 h-4" />
+                        </Button>
+                      </PaymentQRModal>
                       <EditInvoiceModal invoice={invoice} onInvoiceUpdated={handleInvoiceUpdated}>
                         <Button size="sm" variant="outline">
                           <Edit className="w-4 h-4" />
