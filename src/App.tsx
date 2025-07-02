@@ -1,35 +1,37 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import NotFound from "./pages/NotFound";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from '@/components/ui/toaster';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { LanguageProvider } from '@/contexts/LanguageContext';
+import Index from '@/pages/Index';
+import Auth from '@/pages/Auth';
+import PaymentSuccess from '@/pages/PaymentSuccess';
+import PaymentFailed from '@/pages/PaymentFailed';
+import NotFound from '@/pages/NotFound';
+import './App.css';
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <AuthProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+          <Router>
             <Routes>
-              <Route path="/auth" element={<Auth />} />
               <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/payment-failed" element={<PaymentFailed />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </BrowserRouter>
+          </Router>
+          <Toaster />
         </AuthProvider>
       </LanguageProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+    </QueryClientProvider>
+  );
+}
 
 export default App;

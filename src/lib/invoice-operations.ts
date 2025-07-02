@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import type { Invoice } from './types';
 import { generatePaymentQR } from './payment-utils';
@@ -7,7 +6,7 @@ export const createInvoice = async (invoiceData: Omit<Invoice, 'id' | 'user_id' 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('User not authenticated');
 
-  // Generate QR code for eSewa/Khalti if amount is provided
+  // Generate QR code for eSewa payment if amount is provided
   let paymentLink = invoiceData.payment_link || '';
   if (invoiceData.amount && !paymentLink) {
     paymentLink = generatePaymentQR(invoiceData.amount);
