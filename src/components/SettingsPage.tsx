@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -244,25 +243,49 @@ const SettingsPage = () => {
             <div className="space-y-2">
               <p className="text-sm font-medium">Free Plan Includes:</p>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Up to 5 clients</li>
-                <li>• Basic invoicing</li>
-                <li>• Project tracking</li>
-                <li>• eSewa/Khalti QR codes</li>
+                <li>• Up to 3 clients</li>
+                <li>• Manual invoicing</li>
+                <li>• Basic project tracking</li>
+                <li>• Static QR codes</li>
+                <li>• Local language support</li>
               </ul>
             </div>
 
-            <div className="p-3 bg-blue-50 rounded-lg">
-              <p className="text-sm font-medium text-blue-800">Pro Plan Benefits:</p>
-              <ul className="text-sm text-blue-700 space-y-1 mt-1">
-                <li>• Unlimited clients</li>
-                <li>• Advanced invoicing</li>
-                <li>• Payment reminders</li>
-                <li>• Analytics & reports</li>
-                <li>• Priority support</li>
-              </ul>
-              <Button className="w-full mt-2" size="sm">
-                Upgrade for Rs. 999/month
-              </Button>
+            <div className="grid grid-cols-1 gap-3">
+              <div className="p-3 bg-blue-50 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm font-medium text-blue-800">Pro Monthly</p>
+                  <Badge variant="outline" className="text-xs bg-blue-100">Popular</Badge>
+                </div>
+                <p className="text-lg font-bold text-blue-800 mb-1">Rs. 399/month</p>
+                <ul className="text-sm text-blue-700 space-y-1 mb-2">
+                  <li>• Unlimited clients</li>
+                  <li>• Branded PDF invoices</li>
+                  <li>• Dynamic QR codes</li>
+                  <li>• Payment reminders</li>
+                </ul>
+                <Button className="w-full" size="sm">
+                  Upgrade Monthly
+                </Button>
+              </div>
+
+              <div className="p-3 bg-green-50 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm font-medium text-green-800">Pro Yearly</p>
+                  <Badge variant="outline" className="text-xs bg-green-100">Save 27%</Badge>
+                </div>
+                <p className="text-lg font-bold text-green-800 mb-1">Rs. 3,499/year</p>
+                <p className="text-xs text-green-600 mb-1">Rs. 291/month (save Rs. 1,289)</p>
+                <ul className="text-sm text-green-700 space-y-1 mb-2">
+                  <li>• Everything in Monthly</li>
+                  <li>• Contract templates</li>
+                  <li>• Tax calculation tips</li>
+                  <li>• WhatsApp integration</li>
+                </ul>
+                <Button className="w-full" size="sm" variant="outline">
+                  Upgrade Yearly
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
