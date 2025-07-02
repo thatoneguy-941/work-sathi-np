@@ -1,8 +1,11 @@
+
 import React, { useState, useCallback, lazy, Suspense, memo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/components/Dashboard';
+import ProfilePage from '@/components/ProfilePage';
+import SettingsPage from '@/components/SettingsPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -186,9 +189,9 @@ const Index = memo(() => {
             </Suspense>
           );
         case 'profile':
-          return <div className="p-8 text-center text-gray-600">Profile settings coming soon...</div>;
+          return <ProfilePage />;
         case 'settings':
-          return <div className="p-8 text-center text-gray-600">Settings panel coming soon...</div>;
+          return <SettingsPage />;
         default:
           return <Dashboard onTabChange={handleTabChange} />;
       }
