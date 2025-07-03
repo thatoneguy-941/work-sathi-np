@@ -52,22 +52,22 @@ const Index = memo(() => {
       <Header isLoggedIn={false} onLogin={handleAuthClick} />
       
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 text-center">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
+      <section className="symmetric-container symmetric-section text-center">
+        <div className="max-w-5xl mx-auto space-y-8">
+          <h1 className="text-heading mb-6">
             {t('heroTitle')}
-            <span className="block text-2xl md:text-3xl text-gray-600 mt-2">
+            <span className="block text-subheading text-muted-foreground mt-4">
               {t('heroSubtitle')}
             </span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-body max-w-3xl mx-auto mb-12">
             {t('heroDescription')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8 py-3" onClick={() => window.location.href = '/auth'}>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button size="lg" className="text-lg px-10 py-4 min-w-[200px]" onClick={() => window.location.href = '/auth'}>
               {t('startTrial')}
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-3">
+            <Button size="lg" variant="outline" className="text-lg px-10 py-4 min-w-[200px]">
               {t('watchDemo')}
             </Button>
           </div>
@@ -75,36 +75,36 @@ const Index = memo(() => {
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">
+      <section className="symmetric-container symmetric-section">
+        <h2 className="text-subheading text-center mb-16">
           {t('featuresTitle')}
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-            <CardContent className="pt-6">
-              <Users className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">{t('clientManagement')}</h3>
-              <p className="text-gray-600 mt-2">
+        <div className="symmetric-grid grid-cols-1 md:grid-cols-3">
+          <Card className="text-center p-8 hover:shadow-lg transition-all duration-300 h-full">
+            <CardContent className="pt-8 space-y-6">
+              <Users className="w-16 h-16 text-primary mx-auto" />
+              <h3 className="text-xl font-semibold">{t('clientManagement')}</h3>
+              <p className="text-body text-muted-foreground">
                 {t('clientManagementDesc')}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-            <CardContent className="pt-6">
-              <TrendingUp className="w-12 h-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">{t('projectTracking')}</h3>
-              <p className="text-gray-600 mt-2">
+          <Card className="text-center p-8 hover:shadow-lg transition-all duration-300 h-full">
+            <CardContent className="pt-8 space-y-6">
+              <TrendingUp className="w-16 h-16 text-primary mx-auto" />
+              <h3 className="text-xl font-semibold">{t('projectTracking')}</h3>
+              <p className="text-body text-muted-foreground">
                 {t('projectTrackingDesc')}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-            <CardContent className="pt-6">
-              <FileText className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">{t('smartInvoicing')}</h3>
-              <p className="text-gray-600 mt-2">
+          <Card className="text-center p-8 hover:shadow-lg transition-all duration-300 h-full">
+            <CardContent className="pt-8 space-y-6">
+              <FileText className="w-16 h-16 text-primary mx-auto" />
+              <h3 className="text-xl font-semibold">{t('smartInvoicing')}</h3>
+              <p className="text-body text-muted-foreground">
                 {t('smartInvoicingDesc')}
               </p>
             </CardContent>
@@ -113,9 +113,9 @@ const Index = memo(() => {
       </section>
 
       {/* Pricing Section */}
-      <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">{t('pricingTitle')}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <section className="symmetric-container symmetric-section">
+        <h2 className="text-subheading text-center mb-16">{t('pricingTitle')}</h2>
+        <div className="symmetric-grid grid-cols-1 md:grid-cols-3 max-w-6xl mx-auto">
           <Card className="p-6 border-2">
             <CardContent className="pt-6">
               <h3 className="text-2xl font-bold mb-2">{t('freePlan')}</h3>
@@ -224,14 +224,14 @@ const Index = memo(() => {
 
     return (
       <ProtectedRoute>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-background">
           <Header 
             isLoggedIn={true} 
             onLogout={signOut} 
           />
           <div className="flex h-[calc(100vh-64px)]">
             <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
-            <main className="flex-1 overflow-auto p-6">
+            <main className="flex-1 overflow-auto symmetric-container py-8">
               {renderContent()}
             </main>
           </div>
