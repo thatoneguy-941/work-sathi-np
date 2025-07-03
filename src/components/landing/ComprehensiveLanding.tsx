@@ -8,7 +8,7 @@ import {
   MessageSquare, Trophy, Smartphone, Palette, Quote
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import AnimatedDemo from '@/components/demo/AnimatedDemo';
+import RealAppDemo from '@/components/demo/RealAppDemo';
 
 const ComprehensiveLanding = () => {
   const { t } = useLanguage();
@@ -205,7 +205,7 @@ const ComprehensiveLanding = () => {
           <div className="lg:sticky lg:top-8">
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg opacity-20 blur"></div>
-              <AnimatedDemo />
+              <RealAppDemo />
             </div>
           </div>
         </div>

@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Users, FileText, TrendingUp, Plus, CheckCircle, Clock, DollarSign, 
-  BarChart3, Calendar, Phone, Mail, Building, Edit, Eye, Download,
-  Play, Pause, ChevronRight
+  TrendingUp, Users, FileText, Star, CheckCircle, ArrowRight, 
+  Shield, Zap, Globe, Clock, DollarSign, BarChart3, 
+  MessageSquare, Trophy, Smartphone, Palette, Quote,
+  Play, Pause, ChevronRight, Plus, Edit, Eye, Download,
+  Building, Mail, Phone, Calendar, Loader2
 } from 'lucide-react';
 
 const AnimatedDemo = () => {
