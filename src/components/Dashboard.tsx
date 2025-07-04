@@ -11,6 +11,7 @@ import DashboardInsights from '@/components/dashboard/DashboardInsights';
 import DashboardQuickActions from '@/components/dashboard/DashboardQuickActions';
 import { getDashboardStats } from '@/lib/database';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface DashboardProps {
   onTabChange?: (tab: string) => void;
@@ -19,13 +20,16 @@ interface DashboardProps {
 const Dashboard = ({ onTabChange }: DashboardProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { user, loading: authLoading } = useAuth();
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [activeView, setActiveView] = useState('overview');
 
   useEffect(() => {
-    loadDashboardStats();
-  }, []);
+    if (!authLoading && user) {
+      loadDashboardStats();
+    }
+  }, [authLoading, user]);
 
   const loadDashboardStats = async () => {
     try {
@@ -43,8 +47,12 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
     }
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return <LoadingSpinner text="Loading dashboard..." />;
+  }
+
+  if (!user) {
+    return <div>Please sign in to view dashboard</div>;
   }
 
   return (
