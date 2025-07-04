@@ -41,10 +41,10 @@ const DemoComponentWrapper = memo(({ children, isActive }: { children: React.Rea
       isActive ? 'pointer-events-auto' : 'pointer-events-none'
     }`}
     style={{
-      transform: 'scale(0.35)',
+      transform: 'scale(0.28)',
       transformOrigin: 'top left',
-      width: '285.7%', // 100% / 0.35 to maintain content width
-      height: '285.7%', // 100% / 0.35 to maintain content height
+      width: '357%', // 100% / 0.28 to maintain content width
+      height: '357%', // 100% / 0.28 to maintain content height
       overflow: 'hidden'
     }}
   >
@@ -238,7 +238,7 @@ const RealAppDemo = () => {
       </div>
 
       {/* Demo Content */}
-      <div className="relative min-h-[320px] max-h-[320px] overflow-hidden bg-gray-50">
+      <div className="relative h-[300px] overflow-hidden bg-gray-50">
         <AnimatePresence mode="wait">
           <motion.div 
             key={currentStep}

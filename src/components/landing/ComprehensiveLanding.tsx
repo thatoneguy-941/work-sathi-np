@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,9 +9,11 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import RealAppDemo from '@/components/demo/RealAppDemo';
+import FullScreenDemo from '@/components/demo/FullScreenDemo';
 
 const ComprehensiveLanding = () => {
   const { t } = useLanguage();
+  const [isFullScreenDemoOpen, setIsFullScreenDemoOpen] = useState(false);
 
   const features = [
     {
@@ -183,7 +185,12 @@ const ComprehensiveLanding = () => {
                 Start Free Trial
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-4">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="text-lg px-8 py-4"
+                onClick={() => setIsFullScreenDemoOpen(true)}
+              >
                 Watch Demo
               </Button>
             </div>
@@ -420,6 +427,12 @@ const ComprehensiveLanding = () => {
           </p>
         </div>
       </footer>
+
+      {/* Full Screen Demo Modal */}
+      <FullScreenDemo 
+        isOpen={isFullScreenDemoOpen} 
+        onClose={() => setIsFullScreenDemoOpen(false)} 
+      />
     </div>
   );
 };
