@@ -6,12 +6,9 @@ import {
   TrendingUp, Users, FileText, CheckCircle, BarChart3,
   Play, Pause, ChevronRight, Loader2
 } from 'lucide-react';
-
-// Lazy load the actual app components
-const Dashboard = React.lazy(() => import('@/components/Dashboard'));
-const ClientManagement = React.lazy(() => import('@/components/ClientManagement'));
-const ProjectManagement = React.lazy(() => import('@/components/ProjectManagement'));
-const InvoiceGeneration = React.lazy(() => import('@/components/InvoiceGeneration'));
+import DashboardStats from '@/components/dashboard/DashboardStats';
+import StatCard from '@/components/shared/StatCard';
+import { DemoAuthProvider } from '@/contexts/DemoContext';
 
 // Loading component for the demo
 const DemoLoader = memo(() => (
@@ -27,6 +24,174 @@ const DemoLoader = memo(() => (
 
 DemoLoader.displayName = 'DemoLoader';
 
+// Mock data for demo
+const mockStats = {
+  totalIncome: 450000,
+  monthlyIncome: 85000,
+  totalClients: 12,
+  totalProjects: 8,
+  totalPending: 25000,
+  incomeGrowth: '+18.5%',
+  unpaidInvoicesCount: 3,
+  paidInvoicesCount: 15,
+  totalInvoices: 18,
+  completedProjects: 5,
+  inProgressProjects: 3
+};
+
+const mockClients = [
+  { id: '1', name: 'Tech Solutions Pvt Ltd', email: 'contact@techsolutions.com', company: 'Tech Solutions', phone: '+977-9841234567' },
+  { id: '2', name: 'Digital Marketing Co', email: 'info@digitalmarketing.com', company: 'Digital Marketing', phone: '+977-9841234568' },
+  { id: '3', name: 'E-commerce Store', email: 'hello@ecomstore.com', company: 'E-commerce', phone: '+977-9841234569' }
+];
+
+const mockProjects = [
+  { id: '1', project_name: 'Website Redesign', client_id: '1', status: 'In Progress', description: 'Complete website overhaul with modern design' },
+  { id: '2', project_name: 'Mobile App Development', client_id: '2', status: 'Completed', description: 'iOS and Android app development' },
+  { id: '3', project_name: 'SEO Optimization', client_id: '3', status: 'Pending', description: 'Complete SEO audit and optimization' }
+];
+
+const mockInvoices = [
+  { id: '1', invoice_number: 'INV-2024-001', amount: 75000, status: 'Paid', due_date: '2024-01-15', project_id: '1' },
+  { id: '2', invoice_number: 'INV-2024-002', amount: 45000, status: 'Unpaid', due_date: '2024-01-20', project_id: '2' },
+  { id: '3', invoice_number: 'INV-2024-003', amount: 65000, status: 'Paid', due_date: '2024-01-25', project_id: '3' }
+];
+
+// Demo components with mock data
+const DemoDashboard = () => (
+  <div className="space-y-8 p-6">
+    <div className="space-y-2">
+      <h1 className="text-3xl font-bold">Dashboard</h1>
+      <p className="text-muted-foreground">Welcome back! Here's your business overview.</p>
+    </div>
+    <DashboardStats stats={mockStats} />
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <Card>
+        <CardContent className="p-6">
+          <h3 className="font-semibold mb-4">Recent Activity</h3>
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span>Invoice INV-2024-003 paid</span>
+              <span className="text-green-600">Rs. 65,000</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span>New project started</span>
+              <span className="text-blue-600">Website Redesign</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent className="p-6">
+          <h3 className="font-semibold mb-4">Upcoming Deadlines</h3>
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span>Mobile App Development</span>
+              <span className="text-orange-600">2 days</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span>SEO Optimization</span>
+              <span className="text-red-600">5 days</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+);
+
+const DemoClients = () => (
+  <div className="space-y-6 p-6">
+    <div className="flex justify-between items-center">
+      <h1 className="text-3xl font-bold">Clients</h1>
+      <Button>Add Client</Button>
+    </div>
+    <div className="grid gap-4">
+      {mockClients.map((client) => (
+        <Card key={client.id} className="hover:shadow-md transition-shadow">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="font-semibold">{client.name}</h3>
+                <p className="text-sm text-muted-foreground">{client.email}</p>
+                <p className="text-sm text-muted-foreground">{client.phone}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-medium">{client.company}</p>
+                <Button size="sm" variant="outline" className="mt-2">View Details</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+);
+
+const DemoProjects = () => (
+  <div className="space-y-6 p-6">
+    <div className="flex justify-between items-center">
+      <h1 className="text-3xl font-bold">Projects</h1>
+      <Button>New Project</Button>
+    </div>
+    <div className="grid gap-4">
+      {mockProjects.map((project) => (
+        <Card key={project.id} className="hover:shadow-md transition-shadow">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <h3 className="font-semibold">{project.project_name}</h3>
+                <p className="text-sm text-muted-foreground mt-1">{project.description}</p>
+              </div>
+              <div className="text-right">
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  project.status === 'Completed' ? 'bg-green-100 text-green-800' :
+                  project.status === 'In Progress' ? 'bg-blue-100 text-blue-800' :
+                  'bg-yellow-100 text-yellow-800'
+                }`}>
+                  {project.status}
+                </span>
+                <Button size="sm" variant="outline" className="mt-2 ml-2">View</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+);
+
+const DemoInvoices = () => (
+  <div className="space-y-6 p-6">
+    <div className="flex justify-between items-center">
+      <h1 className="text-3xl font-bold">Invoices</h1>
+      <Button>Create Invoice</Button>
+    </div>
+    <div className="grid gap-4">
+      {mockInvoices.map((invoice) => (
+        <Card key={invoice.id} className="hover:shadow-md transition-shadow">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold">{invoice.invoice_number}</h3>
+                <p className="text-sm text-muted-foreground">Due: {invoice.due_date}</p>
+              </div>
+              <div className="text-right">
+                <p className="font-semibold">Rs. {invoice.amount.toLocaleString()}</p>
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  invoice.status === 'Paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
+                  {invoice.status}
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+);
+
 // Demo wrapper component that scales down the real components
 const DemoComponentWrapper = memo(({ children, isActive }: { children: React.ReactNode; isActive: boolean }) => (
   <motion.div
@@ -41,15 +206,17 @@ const DemoComponentWrapper = memo(({ children, isActive }: { children: React.Rea
       isActive ? 'pointer-events-auto' : 'pointer-events-none'
     }`}
     style={{
-      transform: 'scale(0.28)',
+      transform: 'scale(0.25)',
       transformOrigin: 'top left',
-      width: '357%', // 100% / 0.28 to maintain content width
-      height: '357%', // 100% / 0.28 to maintain content height
+      width: '400%', // 100% / 0.25 to maintain content width
+      height: '400%', // 100% / 0.25 to maintain content height
       overflow: 'hidden'
     }}
   >
-    <div className="bg-background min-h-screen p-6 overflow-hidden">
-      {children}
+    <div className="bg-background min-h-screen overflow-hidden">
+      <DemoAuthProvider>
+        {children}
+      </DemoAuthProvider>
     </div>
   </motion.div>
 ));
@@ -95,29 +262,13 @@ const RealAppDemo = () => {
     
     switch (stepComponent) {
       case 'dashboard':
-        return (
-          <Suspense fallback={<DemoLoader />}>
-            <Dashboard />
-          </Suspense>
-        );
+        return <DemoDashboard />;
       case 'clients':
-        return (
-          <Suspense fallback={<DemoLoader />}>
-            <ClientManagement />
-          </Suspense>
-        );
+        return <DemoClients />;
       case 'projects':
-        return (
-          <Suspense fallback={<DemoLoader />}>
-            <ProjectManagement />
-          </Suspense>
-        );
+        return <DemoProjects />;
       case 'invoices':
-        return (
-          <Suspense fallback={<DemoLoader />}>
-            <InvoiceGeneration />
-          </Suspense>
-        );
+        return <DemoInvoices />;
       case 'success':
         return (
           <motion.div 
@@ -153,7 +304,7 @@ const RealAppDemo = () => {
                 className="bg-green-100 p-4 rounded-lg"
               >
                 <div className="text-lg font-bold text-green-800">
-                  Total Revenue: Rs. 3,10,000
+                  Total Revenue: Rs. 4,50,000
                 </div>
                 <div className="text-sm text-green-600">+Rs. 65,000 this month</div>
               </motion.div>
@@ -238,7 +389,7 @@ const RealAppDemo = () => {
       </div>
 
       {/* Demo Content */}
-      <div className="relative h-[300px] overflow-hidden bg-gray-50">
+      <div className="relative h-[280px] overflow-hidden bg-gray-50">
         <AnimatePresence mode="wait">
           <motion.div 
             key={currentStep}

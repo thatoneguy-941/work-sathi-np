@@ -6,10 +6,193 @@ import {
   TrendingUp, Users, FileText, CheckCircle, BarChart3,
   Play, Pause, ChevronRight, X
 } from 'lucide-react';
-import Dashboard from '@/components/Dashboard';
-import ClientManagement from '@/components/ClientManagement';
-import ProjectManagement from '@/components/ProjectManagement';
-import InvoiceGeneration from '@/components/InvoiceGeneration';
+import { DemoAuthProvider } from '@/contexts/DemoContext';
+import DashboardStats from '@/components/dashboard/DashboardStats';
+import { Card, CardContent } from '@/components/ui/card';
+
+// Mock data - same as RealAppDemo
+const mockStats = {
+  totalIncome: 450000,
+  monthlyIncome: 85000,
+  totalClients: 12,
+  totalProjects: 8,
+  totalPending: 25000,
+  incomeGrowth: '+18.5%',
+  unpaidInvoicesCount: 3,
+  paidInvoicesCount: 15,
+  totalInvoices: 18,
+  completedProjects: 5,
+  inProgressProjects: 3
+};
+
+const mockClients = [
+  { id: '1', name: 'Tech Solutions Pvt Ltd', email: 'contact@techsolutions.com', company: 'Tech Solutions', phone: '+977-9841234567' },
+  { id: '2', name: 'Digital Marketing Co', email: 'info@digitalmarketing.com', company: 'Digital Marketing', phone: '+977-9841234568' },
+  { id: '3', name: 'E-commerce Store', email: 'hello@ecomstore.com', company: 'E-commerce', phone: '+977-9841234569' }
+];
+
+const mockProjects = [
+  { id: '1', project_name: 'Website Redesign', client_id: '1', status: 'In Progress', description: 'Complete website overhaul with modern design' },
+  { id: '2', project_name: 'Mobile App Development', client_id: '2', status: 'Completed', description: 'iOS and Android app development' },
+  { id: '3', project_name: 'SEO Optimization', client_id: '3', status: 'Pending', description: 'Complete SEO audit and optimization' }
+];
+
+const mockInvoices = [
+  { id: '1', invoice_number: 'INV-2024-001', amount: 75000, status: 'Paid', due_date: '2024-01-15', project_id: '1' },
+  { id: '2', invoice_number: 'INV-2024-002', amount: 45000, status: 'Unpaid', due_date: '2024-01-20', project_id: '2' },
+  { id: '3', invoice_number: 'INV-2024-003', amount: 65000, status: 'Paid', due_date: '2024-01-25', project_id: '3' }
+];
+
+// Demo components
+const DemoDashboard = () => (
+  <DemoAuthProvider>
+    <div className="space-y-8 p-6">
+      <div className="space-y-2">
+        <h1 className="text-4xl font-bold">Dashboard</h1>
+        <p className="text-muted-foreground text-lg">Welcome back! Here's your business overview.</p>
+      </div>
+      <DashboardStats stats={mockStats} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="font-semibold mb-4 text-lg">Recent Activity</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <span>Invoice INV-2024-003 paid</span>
+                <span className="text-green-600 font-semibold">Rs. 65,000</span>
+              </div>
+              <div className="flex justify-between">
+                <span>New project started</span>
+                <span className="text-blue-600 font-semibold">Website Redesign</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Client added</span>
+                <span className="text-purple-600 font-semibold">E-commerce Store</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="font-semibold mb-4 text-lg">Upcoming Deadlines</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <span>Mobile App Development</span>
+                <span className="text-orange-600 font-semibold">2 days</span>
+              </div>
+              <div className="flex justify-between">
+                <span>SEO Optimization</span>
+                <span className="text-red-600 font-semibold">5 days</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Website Redesign</span>
+                <span className="text-blue-600 font-semibold">1 week</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  </DemoAuthProvider>
+);
+
+const DemoClients = () => (
+  <DemoAuthProvider>
+    <div className="space-y-6 p-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-4xl font-bold">Clients</h1>
+        <Button size="lg">Add Client</Button>
+      </div>
+      <div className="grid gap-6">
+        {mockClients.map((client) => (
+          <Card key={client.id} className="hover:shadow-lg transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="font-semibold text-xl">{client.name}</h3>
+                  <p className="text-muted-foreground mt-1">{client.email}</p>
+                  <p className="text-muted-foreground">{client.phone}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium text-lg">{client.company}</p>
+                  <Button size="lg" variant="outline" className="mt-3">View Details</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </DemoAuthProvider>
+);
+
+const DemoProjects = () => (
+  <DemoAuthProvider>
+    <div className="space-y-6 p-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-4xl font-bold">Projects</h1>
+        <Button size="lg">New Project</Button>
+      </div>
+      <div className="grid gap-6">
+        {mockProjects.map((project) => (
+          <Card key={project.id} className="hover:shadow-lg transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-xl">{project.project_name}</h3>
+                  <p className="text-muted-foreground mt-2 text-lg">{project.description}</p>
+                </div>
+                <div className="text-right">
+                  <span className={`px-3 py-2 rounded-full text-sm font-medium ${
+                    project.status === 'Completed' ? 'bg-green-100 text-green-800' :
+                    project.status === 'In Progress' ? 'bg-blue-100 text-blue-800' :
+                    'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {project.status}
+                  </span>
+                  <Button size="lg" variant="outline" className="mt-3 ml-3">View Project</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </DemoAuthProvider>
+);
+
+const DemoInvoices = () => (
+  <DemoAuthProvider>
+    <div className="space-y-6 p-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-4xl font-bold">Invoices</h1>
+        <Button size="lg">Create Invoice</Button>
+      </div>
+      <div className="grid gap-6">
+        {mockInvoices.map((invoice) => (
+          <Card key={invoice.id} className="hover:shadow-lg transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-semibold text-xl">{invoice.invoice_number}</h3>
+                  <p className="text-muted-foreground mt-1">Due: {invoice.due_date}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-semibold text-2xl">Rs. {invoice.amount.toLocaleString()}</p>
+                  <span className={`px-3 py-2 rounded-full text-sm font-medium ${
+                    invoice.status === 'Paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  }`}>
+                    {invoice.status}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </DemoAuthProvider>
+);
 
 interface FullScreenDemoProps {
   isOpen: boolean;
@@ -55,13 +238,13 @@ const FullScreenDemo = ({ isOpen, onClose }: FullScreenDemoProps) => {
     
     switch (stepComponent) {
       case 'dashboard':
-        return <Dashboard />;
+        return <DemoDashboard />;
       case 'clients':
-        return <ClientManagement />;
+        return <DemoClients />;
       case 'projects':
-        return <ProjectManagement />;
+        return <DemoProjects />;
       case 'invoices':
-        return <InvoiceGeneration />;
+        return <DemoInvoices />;
       case 'success':
         return (
           <motion.div 
