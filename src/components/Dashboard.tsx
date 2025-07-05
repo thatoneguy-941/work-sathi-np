@@ -9,7 +9,8 @@ import DashboardViewToggle from '@/components/dashboard/DashboardViewToggle';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import DashboardInsights from '@/components/dashboard/DashboardInsights';
 import DashboardQuickActions from '@/components/dashboard/DashboardQuickActions';
-import { getDashboardStats } from '@/lib/database';
+import AdvancedAnalytics from '@/components/analytics/AdvancedAnalytics';
+import { getDashboardStats, getInvoices } from '@/lib/database';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -22,6 +23,7 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
   const [stats, setStats] = useState<any>(null);
+  const [invoices, setInvoices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeView, setActiveView] = useState('overview');
 
@@ -33,13 +35,17 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
 
   const loadDashboardStats = async () => {
     try {
-      const dashboardStats = await getDashboardStats();
+      const [dashboardStats, invoicesData] = await Promise.all([
+        getDashboardStats(),
+        getInvoices()
+      ]);
       setStats(dashboardStats);
+      setInvoices(invoicesData);
     } catch (error) {
-      console.error('Error loading dashboard stats:', error);
+      console.error('Error loading dashboard data:', error);
       toast({
         title: t('error'),
-        description: 'Failed to load dashboard statistics',
+        description: 'Failed to load dashboard data',
         variant: "destructive",
       });
     } finally {
@@ -78,7 +84,7 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
 
       {activeView === 'reminders' && <PaymentReminders />}
       
-      {activeView === 'analytics' && <MonthlyIncomeChart />}
+      {activeView === 'analytics' && <AdvancedAnalytics stats={stats} invoices={invoices} />}
     </div>
   );
 };

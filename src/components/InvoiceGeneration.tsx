@@ -134,6 +134,7 @@ const InvoiceGeneration = () => {
           onInvoiceUpdated={handleInvoiceUpdated}
           onDeleteInvoice={handleDeleteInvoice}
           onTogglePaymentStatus={handleTogglePaymentStatus}
+          loading={loading}
         />
       )}
     </div>
