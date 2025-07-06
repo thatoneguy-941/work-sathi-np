@@ -16,18 +16,20 @@ const DemoComponentWrapper = memo(({ children, isActive }: DemoComponentWrapperP
       filter: isActive ? "blur(0px)" : "blur(1px)"
     }}
     transition={{ duration: 0.5, ease: "easeInOut" }}
-    className={`transform origin-top-left transition-all duration-500 ${
+    className={`w-full h-full overflow-hidden ${
       isActive ? 'pointer-events-auto' : 'pointer-events-none'
     }`}
-    style={{
-      transform: 'scale(0.25)',
-      transformOrigin: 'top left',
-      width: '400%', // 100% / 0.25 to maintain content width
-      height: '400%', // 100% / 0.25 to maintain content height
-      overflow: 'hidden'
-    }}
   >
-    <div className="bg-background min-h-screen overflow-hidden">
+    <div 
+      className="bg-background origin-top-left"
+      style={{
+        transform: 'scale(0.3)',
+        transformOrigin: 'top left',
+        width: '333.33%', // 100% / 0.3 
+        height: '333.33%', // 100% / 0.3
+        minHeight: '100vh'
+      }}
+    >
       <DemoAuthProvider>
         {children}
       </DemoAuthProvider>
