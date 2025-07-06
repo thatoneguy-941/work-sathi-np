@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +14,7 @@ import FullScreenDemo from '@/components/demo/FullScreenDemo';
 
 const ComprehensiveLanding = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [isFullScreenDemoOpen, setIsFullScreenDemoOpen] = useState(false);
 
   const features = [
@@ -181,7 +183,7 @@ const ComprehensiveLanding = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="text-lg px-8 py-4" onClick={() => window.location.href = '/auth'}>
+              <Button size="lg" className="text-lg px-8 py-4" onClick={() => navigate('/auth')}>
                 Start Free Trial
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
@@ -348,7 +350,7 @@ const ComprehensiveLanding = () => {
                   variant={plan.buttonVariant}
                   className="w-full" 
                   size="lg"
-                  onClick={() => window.location.href = '/auth'}
+                  onClick={() => navigate('/auth')}
                 >
                   {plan.buttonText}
                 </Button>
@@ -394,7 +396,7 @@ const ComprehensiveLanding = () => {
               their business and get paid faster.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
+              <Button size="lg" variant="secondary" className="text-lg px-8 py-4" onClick={() => navigate('/auth')}>
                 Start Your Free Trial
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>

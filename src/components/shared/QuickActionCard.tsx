@@ -12,18 +12,19 @@ interface QuickActionCardProps {
   size?: "default" | "compact";
 }
 
-const QuickActionCard = ({ 
+const QuickActionCard = React.forwardRef<HTMLButtonElement, QuickActionCardProps>(({ 
   icon: Icon, 
   label, 
   onClick, 
   variant = "default", 
   children,
   size = "default"
-}: QuickActionCardProps) => {
+}, ref) => {
   const isCompact = size === "compact";
   
   const buttonContent = (
     <Button 
+      ref={ref}
       variant={variant} 
       className={`${isCompact ? 'h-16 px-6 py-3' : 'h-24 px-8 py-4'} flex-col gap-3 w-full text-center font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]`}
       onClick={onClick}
@@ -44,6 +45,8 @@ const QuickActionCard = ({
   }
 
   return buttonContent;
-};
+});
+
+QuickActionCard.displayName = 'QuickActionCard';
 
 export default QuickActionCard;

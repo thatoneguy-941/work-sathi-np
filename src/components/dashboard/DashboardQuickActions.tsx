@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, FileText, Users } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -14,7 +14,7 @@ interface DashboardQuickActionsProps {
   onStatsReload: () => void;
 }
 
-const DashboardQuickActions = ({ stats, onStatsReload }: DashboardQuickActionsProps) => {
+const DashboardQuickActions = memo(({ stats, onStatsReload }: DashboardQuickActionsProps) => {
   const { t } = useLanguage();
 
   return (
@@ -54,6 +54,8 @@ const DashboardQuickActions = ({ stats, onStatsReload }: DashboardQuickActionsPr
       )}
     </>
   );
-};
+});
+
+DashboardQuickActions.displayName = 'DashboardQuickActions';
 
 export default DashboardQuickActions;
