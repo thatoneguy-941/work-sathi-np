@@ -20,20 +20,20 @@ const DashboardQuickActions = memo(({ stats, onStatsReload }: DashboardQuickActi
   return (
     <>
       {/* Quick Actions */}
-      <Card className="shadow-sm">
+      <Card variant="elevated" className="shadow-md">
         <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-medium">{t('quickActions')}</CardTitle>
+          <CardTitle className="text-xl font-semibold">{t('quickActions')}</CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="dashboard-stats-grid">
             <AddClientModal onClientAdded={onStatsReload}>
-              <QuickActionCard icon={Plus} label={t('addClient')} />
+              <QuickActionCard icon={Plus} label={t('addClient')} variant="elevated" />
             </AddClientModal>
             <AddProjectModal onProjectAdded={onStatsReload}>
-              <QuickActionCard icon={Plus} label={t('newProject')} />
+              <QuickActionCard icon={Plus} label={t('newProject')} variant="elevated" />
             </AddProjectModal>
             <AddInvoiceModal onInvoiceAdded={onStatsReload}>
-              <QuickActionCard icon={FileText} label={t('createInvoice')} />
+              <QuickActionCard icon={FileText} label={t('createInvoice')} variant="elevated" />
             </AddInvoiceModal>
           </div>
         </CardContent>

@@ -7,7 +7,7 @@ interface QuickActionCardProps {
   icon: LucideIcon;
   label: string;
   onClick?: () => void;
-  variant?: "default" | "outline";
+  variant?: "default" | "outline" | "elevated" | "elegant";
   children?: React.ReactNode;
   size?: "default" | "compact";
 }

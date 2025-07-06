@@ -183,14 +183,19 @@ const ComprehensiveLanding = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="text-lg px-8 py-4" onClick={() => navigate('/auth')}>
+              <Button 
+                size="xl" 
+                variant="gradient" 
+                className="text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300" 
+                onClick={() => navigate('/auth')}
+              >
                 Start Free Trial
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               <Button 
-                size="lg" 
-                variant="outline" 
-                className="text-lg px-8 py-4"
+                size="xl" 
+                variant="elegant" 
+                className="text-lg font-medium"
                 onClick={() => setIsFullScreenDemoOpen(true)}
               >
                 Watch Demo
@@ -248,12 +253,12 @@ const ComprehensiveLanding = () => {
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <Card key={index} className="h-full hover:shadow-lg transition-all duration-300 border-none bg-white/80 backdrop-blur">
+              <Card key={index} variant="elevated" className="h-full interactive-hover">
                 <CardHeader className="pb-4">
-                  <div className={`w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center mb-4`}>
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-accent to-secondary flex items-center justify-center mb-4 shadow-sm`}>
                     <Icon className={`w-6 h-6 ${feature.color}`} />
                   </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
