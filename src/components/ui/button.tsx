@@ -18,6 +18,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        elevated: "card-elevated text-card-foreground hover:shadow-lg hover:-translate-y-0.5",
         gradient: "btn-gradient",
         elegant: "btn-elegant",
         premium: "card-premium text-primary-foreground hover:shadow-lg hover:-translate-y-0.5",
