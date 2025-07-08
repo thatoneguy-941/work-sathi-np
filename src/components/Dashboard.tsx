@@ -62,29 +62,46 @@ const Dashboard = ({ onTabChange }: DashboardProps) => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-7xl mx-auto">
       {/* Welcome Section */}
       <DashboardWelcome />
 
       {/* View Toggle */}
-      <DashboardViewToggle activeView={activeView} onViewChange={setActiveView} />
+      <div className="flex justify-center">
+        <DashboardViewToggle activeView={activeView} onViewChange={setActiveView} />
+      </div>
 
       {activeView === 'overview' && (
-        <>
+        <div className="space-y-8">
           {/* Statistics Overview */}
           <DashboardStats stats={stats} onTabChange={onTabChange} />
 
-          {/* Additional Insights */}
-          <DashboardInsights stats={stats} />
-
-          {/* Quick Actions and Getting Started */}
-          <DashboardQuickActions stats={stats} onStatsReload={loadDashboardStats} />
-        </>
+          {/* Content Grid */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="xl:col-span-2 space-y-8">
+              <DashboardInsights stats={stats} />
+            </div>
+            
+            {/* Sidebar Content */}
+            <div className="space-y-6">
+              <DashboardQuickActions stats={stats} onStatsReload={loadDashboardStats} />
+            </div>
+          </div>
+        </div>
       )}
 
-      {activeView === 'reminders' && <PaymentReminders />}
+      {activeView === 'reminders' && (
+        <div className="max-w-4xl mx-auto">
+          <PaymentReminders />
+        </div>
+      )}
       
-      {activeView === 'analytics' && <AdvancedAnalytics stats={stats} invoices={invoices} />}
+      {activeView === 'analytics' && (
+        <div className="max-w-6xl mx-auto">
+          <AdvancedAnalytics stats={stats} invoices={invoices} />
+        </div>
+      )}
     </div>
   );
 };

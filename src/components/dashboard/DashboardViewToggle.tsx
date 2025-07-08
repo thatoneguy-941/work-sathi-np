@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Card } from '@/components/ui/card';
 
 interface DashboardViewToggleProps {
   activeView: string;
@@ -9,26 +10,28 @@ interface DashboardViewToggleProps {
 const DashboardViewToggle = ({ activeView, onViewChange }: DashboardViewToggleProps) => {
   const views = [
     { key: 'overview', label: 'Overview' },
-    { key: 'reminders', label: 'Payment Reminders' },
+    { key: 'reminders', label: 'Payment reminders' },
     { key: 'analytics', label: 'Analytics' }
   ];
 
   return (
-    <div className="flex gap-2 bg-white p-1 rounded-lg border w-fit">
-      {views.map((view) => (
-        <button
-          key={view.key}
-          onClick={() => onViewChange(view.key)}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeView === view.key 
-              ? 'bg-blue-600 text-white' 
-              : 'text-gray-600 hover:text-gray-900'
-          }`}
-        >
-          {view.label}
-        </button>
-      ))}
-    </div>
+    <Card className="p-1 w-fit">
+      <div className="flex gap-1">
+        {views.map((view) => (
+          <button
+            key={view.key}
+            onClick={() => onViewChange(view.key)}
+            className={`px-6 py-3 rounded-md text-sm font-medium transition-all duration-200 ${
+              activeView === view.key 
+                ? 'btn-gradient text-primary-foreground shadow-md' 
+                : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+            }`}
+          >
+            {view.label}
+          </button>
+        ))}
+      </div>
+    </Card>
   );
 };
 
